@@ -7,21 +7,21 @@ const ToDoListItem = ({ title, description, duration,
 }) => {
     return (
         <div className="to-do-list-item">
-            <div className="to-do-list-item-title">
+            <div className="to-do-list-item-title row">
                 <span >
                     {title}
                 </span>
             </div>
-            <div >
-                <span className="to-do-list-item-description">
+            <div className="to-do-list-item-description row">
+                <span>
                     {description}
                 </span>
             </div>  
-            <div className="to-do-list-item-elapsed">
+            <div className="to-do-list-item-elapsed row">
                 <span>{`Transcurrido: ${elapsed} `}</span>
                 <span>{`Asignado: ${duration}`}</span>
             </div>
-            <div>
+            <div className="to-do-list-item-creation">
                 <span>{`Creada: ${creationDate}`}</span>
             </div>
         </div>
