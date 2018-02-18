@@ -1,0 +1,18 @@
+.to-do-list-container-actions {
+    margin: 10px;
+}
+
+.col {
+    display: inline-block;
+}
+
+.section-header {
+    width: 98%;
+}
+
+#save-button {
+    cursor: pointer;
+}
+#save-button:hover {
+    color: #8c8c8c;
+}

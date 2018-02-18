@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import './styles.css';
+import { formatDate } from '../../helpers/formatDate';
+import { secondToMinutes } from '../../helpers/secondsToMinute';
 
 const ToDoListItem = ({ title, description, duration,
     elapsed, creationDate
@@ -18,11 +20,11 @@ const ToDoListItem = ({ title, description, duration,
                 </span>
             </div>  
             <div className="to-do-list-item-elapsed row">
-                <span>{`Transcurrido: ${elapsed} `}</span>
-                <span>{`Asignado: ${duration}`}</span>
+                <span className="to-do-list-item-property">Transcurrido:</span> <span>{secondToMinutes(elapsed)}      </span>
+                <span className="to-do-list-item-property">Asignado:</span> <span>{secondToMinutes(duration)}</span>
             </div>
             <div className="to-do-list-item-creation">
-                <span>{`Creada: ${creationDate}`}</span>
+                <span>{`Creada: ${formatDate(creationDate)}`}</span>
             </div>
         </div>
     );

@@ -24,3 +24,7 @@
 .to-do-list-item .row {
     margin-bottom: 5px;
 }
+
+.to-do-list-item-property {
+    font-weight: bold;
+}
