@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 
-import { fetchToDoList } from "../actions/toDoList";
-import { getTasks } from '../selectors/task';
+import { fetchToDoList, insertTask } from "../actions/toDoList";
+import { getTasks, getToDoInserting } from '../selectors/task';
 import ToDoList from '../components/ToDoList';
 import ToDoForm from '../components/ToDoForm';
 
@@ -19,8 +19,19 @@ class ToDoListContainer extends Component {
     renderEditForm = () => (
         <ToDoForm
             onBack={this.handleOnBack}
+            onSubmit={this.handleSubmit}
+            onSubmitSuccess={this.handleOnSubmitSuccess}
+            inserting={this.props.inserting}
         />
     );
+
+    handleOnSubmitSuccess = () => {
+        this.props.history.push(ROUTE_HOME);
+    }
+
+    handleSubmit = values => {
+        this.props.insertTask(values);
+    }
 
     handleAddButton = () => {
         this.props.history.push(ROUTE_TASK_NEW);
@@ -56,14 +67,17 @@ class ToDoListContainer extends Component {
 ToDoListContainer.propTypes = {
     fetchToDoList: PropTypes.func.isRequired,
     showEdit: PropTypes.bool,
+    inserting: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = state => ({
-    tasks: getTasks(state)
+    tasks: getTasks(state),
+    inserting: getToDoInserting(state)
 })
 
 const mapDispatchToProps = {
-    fetchToDoList
+    fetchToDoList,
+    insertTask
 }
 
 export default withRouter(connect(mapStateToProps,mapDispatchToProps)(ToDoListContainer));

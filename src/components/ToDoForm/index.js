@@ -19,19 +19,24 @@ const formField = ({input, meta, type, label, name, placeholder}) => (
 );
 
 const ToDoForm = ({
-    onBack
+    onBack,
+    handleSubmit,
+    inserting
 }) => {
     return (
         <div className="to-do-form-container">
             <div className="to-do-form card">
                 <h2>Nueva tarea</h2>
-                <form>
-                    <Field name="name" separationType="row" component={formField} type="text" label="Nombre*"></Field>
+                <form onSubmit={handleSubmit}>
+                    <Field name="title" separationType="row" component={formField} type="text" label="Nombre*"></Field>
                     <Field name="description"  separationType="row" component={formField} type="textarea" label="Descripción"></Field>
-                    <Field name="duration" placeholder="hh:mm:ss" component={formField} type="text" label="Duración*"></Field>
+                    <Field name="duration" placeholder="hh:mm" component={formField} type="text" label="Duración*"></Field>
+                    <Field name="duration" component="input" type="radio" value="00:15"/>15 mn
+                    <Field name="duration" component="input" type="radio" value="00:30"/>30 mn
+                    <Field name="duration" component="input" type="radio" value="00:60"/>60 mn
                     <div className="row">
                         <button onClick={onBack} type="button">Cancelar</button>
-                        <button type="submit" >Guardar</button>
+                        <button type="submit" disabled={inserting} >Guardar</button>
                     </div>
                 </form>
             </div>
@@ -41,24 +46,29 @@ const ToDoForm = ({
 
 ToDoForm.propTypes = {
     onBack: PropTypes.func.isRequired,
+    handleSubmit: PropTypes.func.isRequired,
+    inserting: PropTypes.bool.isRequired,
 };
 
+//validate fields
 const validate = values => {
     const error = {};
-    if(!values.name) {
-        error.name = "Campo requerido";
+    if(!values.title) {
+        error.title = "Campo requerido";
     }
     if(!values.duration) {
         error.duration = "Campo requerido";
     }
-
     return error;
 }
 
+
+//redux form decoration
 const connectedToDoForm = reduxForm(
     {
         form: "taskForm",
         validate
     })(ToDoForm)
+
 
 export default connectedToDoForm;
