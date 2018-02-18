@@ -8,7 +8,7 @@ const ToDoListItem = ({ title, description, duration,
     elapsed, creationDate
 }) => {
     return (
-        <div className="to-do-list-item">
+        <div className="to-do-list-item card hoverable">
             <div className="to-do-list-item-title row">
                 <span >
                     {title}
