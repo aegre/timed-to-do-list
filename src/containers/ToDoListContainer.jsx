@@ -1,7 +1,15 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
+import { fetchToDoList } from "../actions/toDoList";
+
 class ToDoListContainer extends Component {
+    componentDidMount() {
+        this.props.fetchToDoList();
+    }
+    
+
     render() {
         return (
             <div>
@@ -12,7 +20,11 @@ class ToDoListContainer extends Component {
 }
 
 ToDoListContainer.propTypes = {
-
+    fetchToDoList: PropTypes.func.isRequired,
 };
 
-export default ToDoListContainer;
+const mapDispatchToProps = {
+    fetchToDoList
+}
+
+export default connect(null,mapDispatchToProps)(ToDoListContainer);
