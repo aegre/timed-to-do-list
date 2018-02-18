@@ -9,23 +9,25 @@ import ToDoList from '../components/ToDoList';
 import ToDoForm from '../components/ToDoForm';
 
 import "./styles.css"
-import { ROUTE_TASK_NEW } from '../constants/routes';
+import { ROUTE_TASK_NEW, ROUTE_HOME } from '../constants/routes';
 
 class ToDoListContainer extends Component {
-    componentDidMount() {
+    componentDidMount = () => {
         this.props.fetchToDoList();
     }
 
-    renderEditForm() {
-        return (<ToDoForm/>)
-    }
+    renderEditForm = () => (
+        <ToDoForm
+            onBack={this.handleOnBack}
+        />
+    );
 
     handleAddButton = () => {
         this.props.history.push(ROUTE_TASK_NEW);
     }
 
-    goBack () {
-        this.props.history.goBack();
+    handleOnBack = () => {
+        this.props.history.push(ROUTE_HOME);
     }
     
     render() {

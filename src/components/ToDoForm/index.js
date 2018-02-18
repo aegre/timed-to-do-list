@@ -18,7 +18,9 @@ const formField = ({input, meta, type, label, name, placeholder}) => (
     </div>
 );
 
-const ToDoForm = props => {
+const ToDoForm = ({
+    onBack
+}) => {
     return (
         <div className="to-do-form-container">
             <div className="to-do-form card">
@@ -28,7 +30,7 @@ const ToDoForm = props => {
                     <Field name="description"  separationType="row" component={formField} type="textarea" label="Descripción"></Field>
                     <Field name="duration" placeholder="hh:mm:ss" component={formField} type="text" label="Duración*"></Field>
                     <div className="row">
-                        <button>Cancelar</button>
+                        <button onClick={onBack} type="button">Cancelar</button>
                         <button type="submit" >Guardar</button>
                     </div>
                 </form>
@@ -38,7 +40,7 @@ const ToDoForm = props => {
 };
 
 ToDoForm.propTypes = {
-    dummy: PropTypes.string,
+    onBack: PropTypes.func.isRequired,
 };
 
 const validate = values => {
