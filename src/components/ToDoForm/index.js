@@ -3,14 +3,15 @@ import PropTypes from 'prop-types';
 import { reduxForm, Field } from "redux-form";
 import "./styles.css";
 
-const formField = ({input, meta, type, label, name, placeholder}) => (
+const formField = ({input, meta, type, label, name, placeholder
+,min, max}) => (
     <div className="row">
         <div>
             <label htmlFor={name}>{label} :</label>
         </div>
         <div>
         {type === "textarea" ? <textarea {...input} placeholder={placeholder} /> :
-        <input {...input} placeholder={placeholder} type={type ? type : "text"}/>
+        <input min={min} max={max} {...input} placeholder={placeholder} type={type ? type : "text"}/>
         }</div>
         <div>
         { meta.touched && meta.error && <span className="validation-error"> {meta.error} </span>}
@@ -30,10 +31,10 @@ const ToDoForm = ({
                 <form onSubmit={handleSubmit}>
                     <Field name="title" separationType="row" component={formField} type="text" label="Nombre*"></Field>
                     <Field name="description"  separationType="row" component={formField} type="textarea" label="Descripción"></Field>
-                    <Field name="duration" placeholder="hh:mm" component={formField} type="text" label="Duración*"></Field>
-                    <Field name="duration" component="input" type="radio" value="00:15"/>15 mn
-                    <Field name="duration" component="input" type="radio" value="00:30"/>30 mn
-                    <Field name="duration" component="input" type="radio" value="00:60"/>60 mn
+                    <Field name="duration" min="0" max="120" component={formField} type="number" label="Duración (minutos max 120) *"></Field>
+                    <Field name="duration" component="input" type="radio" value="15"/>15 mn
+                    <Field name="duration" component="input" type="radio" value="30"/>30 mn
+                    <Field name="duration" component="input" type="radio" value="60"/>60 mn
                     <div className="row">
                         <button onClick={onBack} type="button">Cancelar</button>
                         <button type="submit" disabled={inserting} >Guardar</button>
@@ -58,6 +59,9 @@ const validate = values => {
     }
     if(!values.duration) {
         error.duration = "Campo requerido";
+    }
+    else if(values.duration < 1 || values.duration > 120){
+        error.duration = "La duración debe tener un rango entre 1 y 120"
     }
     return error;
 }

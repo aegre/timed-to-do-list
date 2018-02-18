@@ -30,11 +30,21 @@ class ToDoListContainer extends Component {
     }
 
     handleSubmit = values => {
+        //convert minutes to seconds before save
+        values.duration*= 60;
         this.props.insertTask(values);
     }
 
     handleAddButton = () => {
-        this.props.history.push(ROUTE_TASK_NEW);
+        if(this.props.showEdit)
+        {
+            this.props.history.push(ROUTE_HOME);
+        }
+        else
+        {
+            this.props.history.push(ROUTE_TASK_NEW);
+        }
+        
     }
 
     handleOnBack = () => {

@@ -24,11 +24,10 @@ export const insertTask = task => (
         dispatch(setToDoInserting(true));
         return apiPost(URL_TASK, task).then(
             data => {
-                
                 dispatch(fetchToDoList());
             }
-        ).catch(
-            e => {
+        ).finally(
+            () => {
                 dispatch(setToDoInserting(false));
             }
         )

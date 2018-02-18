@@ -9,5 +9,5 @@ dateFormat.i18n = {
 }
 
 export const formatDate = date => (
-    dateFormat(date, "dd mmmm yyyy hh:mm TT.")
+    dateFormat(date, "dd mmmm yyyy hh:MM TT.")
 )
