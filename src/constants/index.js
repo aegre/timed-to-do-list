@@ -4,3 +4,5 @@ export const FETCH_TO_DO_LIST = "FETCH_TO_DO_LIST";
 export const SET_TO_DO_LIST = "SET_TO_DO_LIST";
 
 export const SET_TO_DO_INSERTING = "SET_TO_DO_INSERTING";
+
+export const SET_ERROR_ON_INSERTING = "SET_ERROR_ON_INSERTING";

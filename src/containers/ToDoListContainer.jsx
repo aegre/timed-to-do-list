@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 
 import { fetchToDoList, insertTask } from "../actions/toDoList";
-import { getTasks, getToDoInserting } from '../selectors/task';
+import { getTasks, getToDoInserting, getErrorOnInserting } from '../selectors/task';
 import ToDoList from '../components/ToDoList';
 import ToDoForm from '../components/ToDoForm';
 
@@ -20,7 +20,6 @@ class ToDoListContainer extends Component {
         <ToDoForm
             onBack={this.handleOnBack}
             onSubmit={this.handleSubmit}
-            onSubmitSuccess={this.handleOnSubmitSuccess}
             inserting={this.props.inserting}
         />
     );
@@ -34,6 +33,13 @@ class ToDoListContainer extends Component {
         values.duration*= 60;
         this.props.insertTask(values);
     }
+    componentWillReceiveProps(nextProps) {
+        if(this.props.inserting && !nextProps.inserting && !this.props.errorOnInserting)
+        {
+            this.props.history.push(ROUTE_HOME);
+        }
+    }
+    
 
     handleAddButton = () => {
         if(this.props.showEdit)
@@ -78,11 +84,13 @@ ToDoListContainer.propTypes = {
     fetchToDoList: PropTypes.func.isRequired,
     showEdit: PropTypes.bool,
     inserting: PropTypes.bool.isRequired,
+    errorOnInserting: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = state => ({
     tasks: getTasks(state),
-    inserting: getToDoInserting(state)
+    inserting: getToDoInserting(state),
+    errorOnInserting: getErrorOnInserting(state)
 })
 
 const mapDispatchToProps = {

@@ -7,3 +7,7 @@ export const getTasks = createSelector(
 export const getToDoInserting = createSelector(
     state => state.task.inserting, inserting => inserting
 )
+
+export const getErrorOnInserting = createSelector(
+    state => state.task.errorOnInserting, error => error
+)
