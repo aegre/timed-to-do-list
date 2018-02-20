@@ -6,6 +6,10 @@ body {
   color: #666;
 }
 
+.app {
+  width: 100vw;
+}
+
 .tooltip {
   position: relative;
   display: inline-block;
@@ -43,6 +47,8 @@ body {
   visibility: visible;
   opacity: 0.5;
 }
+
+
 
 .card {
   margin: 15px;
@@ -138,4 +144,10 @@ a {
 #main-menu a {
   color: #fff;
   font-size: 1.2em;
+}
+
+@media only screen and (max-width: 700px) {
+  .hide-on-low {
+    display: none;
+  }
 }
