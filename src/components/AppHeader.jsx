@@ -1,5 +1,8 @@
 import React from 'react';
+import { Link } from "react-router-dom";
+
 import logo from '../Logo.png';
+import { ROUTE_STADISTICS, ROUTE_HOME } from '../constants/routes';
 
 const AppHeader = () => {
     return (
@@ -9,8 +12,8 @@ const AppHeader = () => {
                     <img src={logo} alt="Logo"/>
                 </div>
                 <div id="main-menu">
-                    <a href="#" className="nav-link">Inicio</a>
-                    <a href="#" className="nav-link">Estadísticas</a>
+                    <Link to={ROUTE_HOME} className="nav-link">Inicio</Link>
+                    <Link to={ROUTE_STADISTICS} className="nav-link">Estadísticas</Link>
                 </div>
             </nav>
         </div>

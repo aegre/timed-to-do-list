@@ -1,0 +1,14 @@
+.to-do-form {
+    width: 400px;
+    text-align: center;
+    
+}
+
+.to-do-form-container {
+    display: flex;
+    justify-content: center;
+}
+
+.to-do-form button {
+    margin: 15px;
+}
