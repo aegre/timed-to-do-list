@@ -3,15 +3,21 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 
-import { fetchToDoList, insertTask } from "../actions/toDoList";
-import { getTasks, getToDoInserting, getErrorOnInserting } from '../selectors/task';
+import { fetchToDoList, insertTask, setSelectedTask } from "../actions/toDoList";
+import { getTasks, getToDoInserting, getErrorOnInserting, getSelectedTask } from '../selectors/task';
 import ToDoList from '../components/ToDoList';
 import ToDoForm from '../components/ToDoForm';
 
 import "./styles.css"
 import { ROUTE_TASK_NEW, ROUTE_HOME } from '../constants/routes';
+import DeletePrompt from '../components/DeletePrompt';
 
 class ToDoListContainer extends Component {
+
+    constructor(props) {
+        super(props);
+        this.state = { showModal: false }
+    }
     componentDidMount = () => {
         this.props.fetchToDoList();
     }
@@ -40,7 +46,6 @@ class ToDoListContainer extends Component {
             this.props.history.push(ROUTE_HOME);
         }
     }
-    
 
     handleAddButton = () => {
         if(this.props.showEdit)
@@ -57,9 +62,22 @@ class ToDoListContainer extends Component {
     handleOnBack = () => {
         this.props.history.push(ROUTE_HOME);
     }
+
+    handleOnDelete = () => {
+        this.setState({ showModal: true });
+    }
+
+    handleCloseOnDelete = () => {
+        this.setState({ showModal: false });
+    }
+
+    handleOnSelect = id => {
+        this.props.setSelectedTask(id);
+    }
     
     render() {
-        const { tasks, showEdit } = this.props;
+        const { tasks, showEdit, selectedTask } = this.props;
+        const { showModal } = this.state;
         return (
             <div>
                 {showEdit && this.renderEditForm()}
@@ -75,7 +93,15 @@ class ToDoListContainer extends Component {
                         </div>
                     </div>
                 </div>
-                <ToDoList tasks={tasks}/>
+                <ToDoList
+                    onSelect={this.handleOnSelect} 
+                    onDelete={this.handleOnDelete} 
+                    tasks={tasks}/>
+                <DeletePrompt 
+                    taskTitle={ selectedTask && selectedTask.title }
+                    show={showModal}
+                    onCloseModal={this.handleCloseOnDelete}
+                    />
             </div>
         );
     }
@@ -91,12 +117,13 @@ ToDoListContainer.propTypes = {
 const mapStateToProps = state => ({
     tasks: getTasks(state),
     inserting: getToDoInserting(state),
-    errorOnInserting: getErrorOnInserting(state)
+    errorOnInserting: getErrorOnInserting(state),
+    selectedTask: getSelectedTask(state)
 })
-
 const mapDispatchToProps = {
     fetchToDoList,
-    insertTask
+    insertTask,
+    setSelectedTask
 }
 
 export default withRouter(connect(mapStateToProps,mapDispatchToProps)(ToDoListContainer));

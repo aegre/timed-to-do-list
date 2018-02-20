@@ -3,6 +3,8 @@
     display: flex;
     width: 95%;
     margin: 0 auto;
+    align-content: center;
+    height: 40px;
 }
 
 .col {
@@ -22,4 +24,14 @@
     align-content: center;
     justify-content: flex-end;
     display: flex;
+    height: 100%;
+    margin-top: 16px;
+}
+
+.to-do-list-icons div {
+    display: flex;
+}
+
+.to-do-list-icons .fas-button {
+    margin: 0px 5px;
 }

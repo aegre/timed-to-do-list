@@ -1,3 +1,3 @@
-const baseUrl = "http://localhost:1234/api/";
+const baseUrl = "http://192.168.100.11:1234/api/";
 
 export const URL_TASK = `${baseUrl}task`;

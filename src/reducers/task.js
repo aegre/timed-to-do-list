@@ -1,5 +1,5 @@
 import { handleActions } from "redux-actions";
-import { SET_TO_DO_LIST, SET_TO_DO_INSERTING, SET_ERROR_ON_INSERTING } from "../constants";
+import { SET_TO_DO_LIST, SET_TO_DO_INSERTING, SET_ERROR_ON_INSERTING, SET_SELECTED_TASK } from "../constants";
 
 export const task = handleActions( {
     [SET_TO_DO_LIST]: 
@@ -8,4 +8,6 @@ export const task = handleActions( {
     (state, action) => ({ ...state, inserting: action.payload}),
     [SET_ERROR_ON_INSERTING]:
     (state, action) => ({ ...state, errorOnInserting: action.payload}),
-}, { inserting: false, errorOnInserting: false })
+    [SET_SELECTED_TASK]:
+    (state, action) => ({ ...state, selectedTask: action.payload})
+}, { inserting: false, errorOnInserting: false, tasks: [], selectedTask: "" })

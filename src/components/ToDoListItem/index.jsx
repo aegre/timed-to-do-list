@@ -5,10 +5,10 @@ import { formatDate } from '../../helpers/formatDate';
 import { secondToMinutes } from '../../helpers/secondsToMinute';
 
 const ToDoListItem = ({ title, description, duration,
-    elapsed, creationDate
+    elapsed, creationDate, _id, onDelete, onSelect
 }) => {
     return (
-        <div className="to-do-list-item card hoverable">
+        <div className="to-do-list-item card" onClick={() => onSelect(_id)}>
             <div className="to-do-list-item-container">
                 <div className="to-do-list-item-title row">
                     <span >
@@ -29,9 +29,16 @@ const ToDoListItem = ({ title, description, duration,
                 </div>
             </div>
             <div className="to-do-list-icons">
-                <div className="">
-                    <i className="far fa-edit"></i>
-                    <i className="fas fa-trash"></i>
+                <div>
+                    <div className="fas-button">
+                        <i className="far fa-edit"></i>
+                    </div>
+                    {
+                        onDelete &&
+                        <div className="fas-button" onClick={() => {onDelete()}}>
+                            <i className="fas fa-trash"></i>
+                        </div>
+                    }
                 </div>
             </div>
         </div>
@@ -40,6 +47,9 @@ const ToDoListItem = ({ title, description, duration,
 
 ToDoListItem.propTypes = {
     title: PropTypes.string.isRequired,
+    _id: PropTypes.string.isRequired,
+    onDelete: PropTypes.func,
+    onSelect: PropTypes.func.isRequired,
 };
 
 export default ToDoListItem;

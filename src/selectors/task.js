@@ -11,3 +11,7 @@ export const getToDoInserting = createSelector(
 export const getErrorOnInserting = createSelector(
     state => state.task.errorOnInserting, error => error
 )
+
+export const getSelectedTask = createSelector(
+    state => state.task.tasks.find( t=> t._id === state.task.selectedTask) , task => task
+)
