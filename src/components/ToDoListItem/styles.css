@@ -13,3 +13,11 @@
 .to-do-list-item-property {
     font-weight: bold;
 }
+
+.to-do-list-item-container {
+    display: block;
+}
+
+.to-do-list-item {
+    display: flex;
+}
