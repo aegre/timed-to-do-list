@@ -22,7 +22,8 @@ const formField = ({input, meta, type, label, name, placeholder
 const ToDoForm = ({
     onBack,
     handleSubmit,
-    inserting
+    inserting,
+    errorOnInserting
 }) => {
     return (
         <div className="to-do-form-container">
@@ -36,9 +37,19 @@ const ToDoForm = ({
                     <Field name="duration" component="input" type="radio" value="30"/>30 mn
                     <Field name="duration" component="input" type="radio" value="60"/>60 mn
                     <div className="row">
-                        <button onClick={onBack} type="button">Cancelar</button>
+                        <button onClick={onBack} type="button" disabled={inserting} >Cancelar</button>
                         <button className="button-action" type="submit" disabled={inserting} >Guardar</button>
                     </div>
+                    { errorOnInserting &&
+                    <div className=" validation-error row">
+                        <span>Ocurrió un error, por favor intente de nuevo.</span>
+                    </div>}
+
+                    { inserting &&
+                    <div className="row">
+                        <span>Guardando...</span>
+                    </div>
+                    }
                 </form>
             </div>
         </div>
@@ -49,6 +60,7 @@ ToDoForm.propTypes = {
     onBack: PropTypes.func.isRequired,
     handleSubmit: PropTypes.func.isRequired,
     inserting: PropTypes.bool.isRequired,
+    errorOnInserting: PropTypes.bool.isRequired,
 };
 
 //validate fields

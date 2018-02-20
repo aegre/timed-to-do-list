@@ -21,6 +21,7 @@ class ToDoListContainer extends Component {
             onBack={this.handleOnBack}
             onSubmit={this.handleSubmit}
             inserting={this.props.inserting}
+            errorOnInserting={this.props.errorOnInserting}
         />
     );
 
