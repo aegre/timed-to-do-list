@@ -18,15 +18,6 @@ class ToDoListContainer extends Component {
         this.props.fetchToDoList();
     }
 
-    renderEditForm = () => (
-        <ToDoForm
-            onBack={this.goHome}
-            onSubmit={this.handleSubmit}
-            inserting={this.props.inserting}
-            errorOnInserting={this.props.errorOnInserting}
-        />
-    );
-
     handleSubmit = values => {
         //convert minutes to seconds before save
         const task = { ...values };
@@ -64,7 +55,6 @@ class ToDoListContainer extends Component {
         const { tasks, showEdit, showDelete, selectedTask } = this.props;
         return (
             <div>
-                {showEdit && this.renderEditForm()}
                 <div className="to-do-list-container-label">
                     <div className="section-header">
                         <h3>Tareas:</h3>
@@ -87,6 +77,15 @@ class ToDoListContainer extends Component {
                     onCloseModal={this.goHome}
                     onDeleteConfirmation={this.handleOnDeleteConfirmation}
                     />
+
+                <ToDoForm
+                    show={showEdit === true}
+                    onCloseModal={this.goHome}
+                    onSubmit={this.handleSubmit}
+                    inserting={this.props.inserting}
+                    errorOnInserting={this.props.errorOnInserting}
+                />
+                
             </div>
         );
     }

@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { reduxForm, Field } from "redux-form";
 import "./styles.css";
+import ModalWindow from '../ModalWindow';
 
 const formField = ({input, meta, type, label, name, placeholder
 ,min, max}) => (
@@ -20,47 +21,51 @@ const formField = ({input, meta, type, label, name, placeholder
 );
 
 const ToDoForm = ({
-    onBack,
+    onCloseModal,
     handleSubmit,
     inserting,
-    errorOnInserting
+    errorOnInserting,
+    show
 }) => {
     return (
-        <div className="to-do-form-container">
-            <div className="to-do-form card">
-                <h2>Nueva tarea</h2>
-                <form onSubmit={handleSubmit}>
-                    <Field name="title" separationType="row" component={formField} type="text" label="Nombre*"></Field>
-                    <Field name="description"  separationType="row" component={formField} type="textarea" label="Descripción"></Field>
-                    <Field name="duration" min="0" max="120" component={formField} type="number" label="Duración (minutos max 120) *"></Field>
-                    <Field name="duration" component="input" type="radio" value="15"/>15 mn
-                    <Field name="duration" component="input" type="radio" value="30"/>30 mn
-                    <Field name="duration" component="input" type="radio" value="60"/>60 mn
-                    <div className="row">
-                        <button onClick={onBack} type="button" disabled={inserting} >Cancelar</button>
-                        <button className="button-action" type="submit" disabled={inserting} >Guardar</button>
-                    </div>
-                    { errorOnInserting &&
-                    <div className=" validation-error row">
-                        <span>Ocurrió un error, por favor intente de nuevo.</span>
-                    </div>}
+        <ModalWindow show={show} onClickOutside={onCloseModal}>
+            <div className="to-do-form-container">
+                <div className="to-do-form">
+                    <h2>Nueva tarea</h2>
+                    <form onSubmit={handleSubmit}>
+                        <Field name="title" separationType="row" component={formField} type="text" label="Nombre*"></Field>
+                        <Field name="description"  separationType="row" component={formField} type="textarea" label="Descripción"></Field>
+                        <Field name="duration" min="0" max="120" component={formField} type="number" label="Duración (minutos max 120) *"></Field>
+                        <Field name="duration" component="input" type="radio" value="15"/>15 mn
+                        <Field name="duration" component="input" type="radio" value="30"/>30 mn
+                        <Field name="duration" component="input" type="radio" value="60"/>60 mn
+                        <div className="row">
+                            <button onClick={onCloseModal} type="button" disabled={inserting} >Cancelar</button>
+                            <button className="button-action" type="submit" disabled={inserting} >Guardar</button>
+                        </div>
+                        { errorOnInserting &&
+                        <div className=" validation-error row">
+                            <span>Ocurrió un error, por favor intente de nuevo.</span>
+                        </div>}
 
-                    { inserting &&
-                    <div className="row">
-                        <span>Guardando...</span>
-                    </div>
-                    }
-                </form>
+                        { inserting &&
+                        <div className="row">
+                            <span>Guardando...</span>
+                        </div>
+                        }
+                    </form>
+                </div>
             </div>
-        </div>
+        </ModalWindow>
     );
 };
 
 ToDoForm.propTypes = {
-    onBack: PropTypes.func.isRequired,
+    onCloseModal: PropTypes.func.isRequired,
     handleSubmit: PropTypes.func.isRequired,
     inserting: PropTypes.bool.isRequired,
     errorOnInserting: PropTypes.bool.isRequired,
+    show: PropTypes.bool.isRequired,
 };
 
 //validate fields
