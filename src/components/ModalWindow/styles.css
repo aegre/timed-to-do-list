@@ -23,3 +23,26 @@
     width: 80%;
     top: 400px;
 }
+
+
+@media only screen and (max-width: 700px) {
+    .modal-content {
+        padding: 10px 0px;
+        margin: 0px;
+        width: 100vw;
+        border: 0px;
+    }
+
+    .modal {
+        margin: 0px;
+        width: 100vw;
+    }
+  }
+
+  
+@media only screen and (max-height: 500px) {
+
+    .modal {
+        padding-top: 50px;
+    }
+  }

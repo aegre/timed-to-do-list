@@ -1,7 +1,6 @@
 .to-do-form {
     width: 400px;
     text-align: center;
-    
 }
 
 .to-do-form-container {
@@ -10,5 +9,13 @@
 }
 
 .to-do-form button {
-    margin: 15px;
+    margin: 10px;
+    width: 30%;
 }
+
+@media only screen and (max-width: 700px) {
+    .to-do-form button {
+        padding: 10px;
+    }
+  }
+  
