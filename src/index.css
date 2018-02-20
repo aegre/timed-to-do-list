@@ -59,3 +59,83 @@ body {
 .validation-error {
   color: red;
 }
+
+button {
+  background-color: #cccccc; /* Green */
+  border: none;
+  color: #444;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  border-radius: 3px;
+}
+
+button.button-action {
+  background-color: #006064;
+  color: #fff;
+}
+
+button.button-delete {
+  background-color: #B71C1C;
+  color: #fff;
+}
+
+button:hover {
+  background-color: #dddddd;
+}
+
+button:hover.button-action {
+  background-color: #00838F;
+}
+
+button:hover.button-delete {
+  background-color: #C62828;
+}
+
+button:disabled, button:disabled:hover{
+  background-color: #dedede;
+  color: #999999;
+}
+
+
+nav {
+  background-color: #006064;
+  width: 100%;
+  height: 80px;
+  display: flex;
+}
+
+a {
+  text-decoration: none;
+}
+
+.nav-link {
+  margin: 10px;
+}
+
+#main-logo {
+  display: flex;
+  align-items: center;
+  margin-left: 20px;
+  height: 100%;
+}
+
+#main-logo img {
+  height: 55%;
+}
+
+#main-menu {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 100%;
+  margin-right: 20px;
+}
+
+#main-menu a {
+  color: #fff;
+  font-size: 1.2em;
+}

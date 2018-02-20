@@ -37,7 +37,7 @@ const ToDoForm = ({
                     <Field name="duration" component="input" type="radio" value="60"/>60 mn
                     <div className="row">
                         <button onClick={onBack} type="button">Cancelar</button>
-                        <button type="submit" disabled={inserting} >Guardar</button>
+                        <button className="button-action" type="submit" disabled={inserting} >Guardar</button>
                     </div>
                 </form>
             </div>

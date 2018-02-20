@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import './App.css';
 import AppHeader from './components/AppHeader';
 import ToDoListContainer from './containers/ToDoListContainer';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";

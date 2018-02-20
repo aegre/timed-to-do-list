@@ -69,9 +69,9 @@ class ToDoListContainer extends Component {
                     
                     <div className="col tooltip">
                         <span className="tooltiptext">Nueva</span>
-                        <button id="save-button" onClick={this.handleAddButton}>
+                        <div id="save-button" onClick={this.handleAddButton}>
                         <i className="fas fa-plus"/>
-                        </button>
+                        </div>
                     </div>
                 </div>
                 <ToDoList tasks={tasks}/>
