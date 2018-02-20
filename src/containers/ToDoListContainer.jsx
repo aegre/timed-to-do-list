@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 
-import { fetchToDoList, insertTask, setSelectedTask } from "../actions/toDoList";
+import { fetchToDoList, insertTask, setSelectedTask, deleteTask } from "../actions/toDoList";
 import { getTasks, getToDoInserting, getErrorOnInserting, getSelectedTask } from '../selectors/task';
 import ToDoList from '../components/ToDoList';
 import ToDoForm from '../components/ToDoForm';
@@ -74,6 +74,10 @@ class ToDoListContainer extends Component {
     handleOnSelect = id => {
         this.props.setSelectedTask(id);
     }
+
+    handleOnDeleteConfirmation = () => {
+        this.props.deleteTask(this.props.selectedTask);
+    }
     
     render() {
         const { tasks, showEdit, selectedTask } = this.props;
@@ -101,6 +105,7 @@ class ToDoListContainer extends Component {
                     taskTitle={ selectedTask && selectedTask.title }
                     show={showModal}
                     onCloseModal={this.handleCloseOnDelete}
+                    onDeleteConfirmation={this.handleOnDeleteConfirmation}
                     />
             </div>
         );
@@ -123,7 +128,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
     fetchToDoList,
     insertTask,
-    setSelectedTask
+    setSelectedTask,
+    deleteTask
 }
 
 export default withRouter(connect(mapStateToProps,mapDispatchToProps)(ToDoListContainer));

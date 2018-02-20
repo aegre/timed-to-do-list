@@ -1,6 +1,6 @@
 import { createAction } from "redux-actions";
 import { SET_TO_DO_LIST, SET_TO_DO_INSERTING, SET_ERROR_ON_INSERTING, SET_SELECTED_TASK } from "../constants";
-import { apiGet, apiPost } from "../api";
+import { apiGet, apiPost, apiDelete } from "../api";
 import { URL_TASK } from "../api/urls";
 
 export const setToDoList = createAction(SET_TO_DO_LIST);
@@ -19,6 +19,17 @@ export const fetchToDoList = () => (
             }            
         )
     )
+)
+
+export const deleteTask = task => (
+    dispatch => {
+        return apiDelete(`${URL_TASK}/${task._id}`).then(
+            data => {
+                //Reload collection
+                dispatch(fetchToDoList());
+            }
+        )
+    }
 )
 
 export const insertTask = task => (

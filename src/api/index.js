@@ -9,4 +9,4 @@ export const apiPut = (url, obj, config) => axios.put(url,obj, config);
 
 export const apiPost = (url, obj, config) => axios.post(url, obj, config);
 
-export const apiDelete = (url, obj, config) => axios.delete(url, obj, config);
+export const apiDelete = (url, params, config) => axios.delete(url, params, config);

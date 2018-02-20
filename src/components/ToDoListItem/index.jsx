@@ -35,7 +35,7 @@ const ToDoListItem = ({ title, description, duration,
                     </div>
                     {
                         onDelete &&
-                        <div className="fas-button" onClick={() => {onDelete()}}>
+                        <div className="fas-button" onClick={onDelete}>
                             <i className="fas fa-trash"></i>
                         </div>
                     }
