@@ -6,8 +6,9 @@ body {
   color: #666;
 }
 
-.app {
-  width: 100vw;
+.content {
+  max-width: 1100px;
+  margin: 0 auto 0 auto;
 }
 
 .tooltip {
@@ -150,4 +151,19 @@ a {
   .hide-on-low {
     display: none;
   }
+}
+
+
+.fas-button {
+  cursor: pointer;
+  background-color: Transparent;
+  background-repeat:no-repeat;
+  border: none;
+  cursor:pointer;
+  overflow: hidden;
+  outline:none;
+}
+
+.fas-button:hover {
+  color: #8c8c8c;
 }

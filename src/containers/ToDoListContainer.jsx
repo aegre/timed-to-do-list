@@ -63,14 +63,14 @@ class ToDoListContainer extends Component {
         return (
             <div>
                 {showEdit && this.renderEditForm()}
-                <div className="to-do-list-container-actions">
-                    <div className="col section-header">
+                <div className="to-do-list-container-label">
+                    <div className="section-header">
                         <h3>Tareas:</h3>
                     </div>
                     
-                    <div className="col tooltip">
+                    <div className="to-do-list-container-actions tooltip">
                         <span className="tooltiptext">Nueva</span>
-                        <div id="save-button" onClick={this.handleAddButton}>
+                        <div className="fas-button" onClick={this.handleAddButton}>
                         <i className="fas fa-plus"/>
                         </div>
                     </div>

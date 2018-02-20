@@ -1,28 +1,25 @@
-.to-do-list-container-actions {
+.to-do-list-container-label {
     margin: 10px;
+    display: flex;
+    width: 95%;
+    margin: 0 auto;
 }
 
 .col {
     display: inline-block;
 }
 
-.section-header {
-    width: 98%;
-}
-
-#save-button {
-    cursor: pointer;
-    background-color: Transparent;
-    background-repeat:no-repeat;
-    border: none;
-    cursor:pointer;
-    overflow: hidden;
-    outline:none;
-}
-#save-button:hover {
-    color: #8c8c8c;
-}
-
 .row {
     margin-bottom: 5px;
+}
+
+.section-header{
+    width: 50%;
+}
+
+.to-do-list-container-actions {
+    width: 50%;
+    align-content: center;
+    justify-content: flex-end;
+    display: flex;
 }

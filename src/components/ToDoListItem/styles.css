@@ -16,8 +16,20 @@
 
 .to-do-list-item-container {
     display: block;
+    width: 80%;
 }
 
 .to-do-list-item {
     display: flex;
 }
+
+.to-do-list-icons {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    width: 20%;
+}
+
+
+
+

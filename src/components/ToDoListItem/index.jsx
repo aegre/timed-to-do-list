@@ -28,9 +28,11 @@ const ToDoListItem = ({ title, description, duration,
                     <span>{`Creada: ${formatDate(creationDate)}`}</span>
                 </div>
             </div>
-            <div className="to-do-list-item-container">
-                <i className="far fa-edit"></i>
-                <i className="fas fa-trash"></i>
+            <div className="to-do-list-icons">
+                <div className="">
+                    <i className="far fa-edit"></i>
+                    <i className="fas fa-trash"></i>
+                </div>
             </div>
         </div>
     );

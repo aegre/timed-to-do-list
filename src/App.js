@@ -18,13 +18,14 @@ class App extends Component {
       <Router>
         <div className="App">
           <AppHeader/>
-          
-          <Route exact path={ROUTE_HOME} component={ToDoListContainer}/>
-          <Switch>
-            <Route exact path={ROUTE_TASK} component={ToDoListContainer}/>
-            <Route path={ROUTE_TASK_NEW} component={this.renderToDoContainerNew}/>
-            <Route path={ROUTE_TASK_UPDATE} render={props => this.renderToDoContainerUpdate(props) }/>
-          </Switch>
+          <div className="content">
+            <Route exact path={ROUTE_HOME} component={ToDoListContainer}/>
+            <Switch>
+              <Route exact path={ROUTE_TASK} component={ToDoListContainer}/>
+              <Route path={ROUTE_TASK_NEW} component={this.renderToDoContainerNew}/>
+              <Route path={ROUTE_TASK_UPDATE} render={props => this.renderToDoContainerUpdate(props) }/>
+            </Switch>
+          </div>
         </div>
       </Router>
     );
