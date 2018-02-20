@@ -37,8 +37,9 @@ class ToDoListContainer extends Component {
 
     handleSubmit = values => {
         //convert minutes to seconds before save
-        values.duration*= 60;
-        this.props.insertTask(values);
+        const task = { ...values };
+        task.duration*= 60;
+        this.props.insertTask({ ...task });
     }
     componentWillReceiveProps(nextProps) {
         if(this.props.inserting && !nextProps.inserting && !this.props.errorOnInserting)
@@ -77,6 +78,7 @@ class ToDoListContainer extends Component {
 
     handleOnDeleteConfirmation = () => {
         this.props.deleteTask(this.props.selectedTask);
+        this.setState({ showModal: false });
     }
     
     render() {

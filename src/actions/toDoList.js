@@ -41,7 +41,6 @@ export const insertTask = task => (
                 if(data.status === 200)
                 {
                     dispatch(setErrorOnInserting(false));
-                    dispatch(fetchToDoList());
                 }
                 else {
                     dispatch(setErrorOnInserting(true));
