@@ -161,8 +161,14 @@ a {
   cursor:pointer;
   overflow: hidden;
   outline:none;
+  color: #666
 }
 
 .fas-button:hover {
   color: #8c8c8c;
+}
+
+/* FONT AWESOME */
+.svg-inline--fa { 
+  height: 100%;
 }

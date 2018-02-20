@@ -1,14 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
+
 import './styles.css';
 import { formatDate } from '../../helpers/formatDate';
 import { secondToMinutes } from '../../helpers/secondsToMinute';
+import { ROUTE_TASK_EDIT, ROUTE_TASK_DELETE } from '../../constants/routes';
 
 const ToDoListItem = ({ title, description, duration,
-    elapsed, creationDate, _id, onDelete, onSelect
+    elapsed, creationDate, _id
 }) => {
     return (
-        <div className="to-do-list-item card" onClick={() => onSelect(_id)}>
+        <div className="to-do-list-item card">
             <div className="to-do-list-item-container">
                 <div className="to-do-list-item-title row">
                     <span >
@@ -30,15 +33,12 @@ const ToDoListItem = ({ title, description, duration,
             </div>
             <div className="to-do-list-icons">
                 <div>
-                    <div className="fas-button">
+                    <Link to={ROUTE_TASK_EDIT.replace(":id",_id)} className="fas-button">
                         <i className="far fa-edit"></i>
-                    </div>
-                    {
-                        onDelete &&
-                        <div className="fas-button" onClick={onDelete}>
-                            <i className="fas fa-trash"></i>
-                        </div>
-                    }
+                    </Link>
+                    <Link to={ROUTE_TASK_DELETE.replace(":id",_id)} className="fas-button">
+                        <i className="fas fa-trash"></i>
+                    </Link>
                 </div>
             </div>
         </div>
@@ -47,9 +47,7 @@ const ToDoListItem = ({ title, description, duration,
 
 ToDoListItem.propTypes = {
     title: PropTypes.string.isRequired,
-    _id: PropTypes.string.isRequired,
-    onDelete: PropTypes.func,
-    onSelect: PropTypes.func.isRequired,
+    _id: PropTypes.string.isRequired
 };
 
 export default ToDoListItem;

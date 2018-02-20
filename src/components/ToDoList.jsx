@@ -2,26 +2,22 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ToDoListItem from './ToDoListItem';
 
-const renderTasks = (tasks, onDelete, onSelect) => (
+const renderTasks = (tasks) => (
     tasks.map( task => (
-        <ToDoListItem {...task} key={task._id} 
-        onDelete={onDelete}
-        onSelect={onSelect} />
+        <ToDoListItem {...task} key={task._id} />
     ))
 );
 
-const ToDoList = ({tasks, onDelete, onSelect }) => {
+const ToDoList = ({tasks}) => {
     return (
         <div>
-            {tasks && renderTasks(tasks, onDelete, onSelect)}
+            {tasks && renderTasks(tasks)}
         </div>
     );
 };
 
 ToDoList.propTypes = {
-    tasks: PropTypes.array,
-    onDelete: PropTypes.func,
-    onSelect: PropTypes.func.isRequired,
+    tasks: PropTypes.array
 };
 
 export default ToDoList;

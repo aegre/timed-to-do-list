@@ -13,5 +13,5 @@ export const getErrorOnInserting = createSelector(
 )
 
 export const getSelectedTask = createSelector(
-    state => state.task.tasks.find( t=> t._id === state.task.selectedTask) , task => task
+    (state,props) => state.task.tasks.find( t=> t._id === props.taskId) , task => task
 )

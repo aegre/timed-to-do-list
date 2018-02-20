@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 
-import { fetchToDoList, insertTask, setSelectedTask, deleteTask } from "../actions/toDoList";
+import { fetchToDoList, insertTask, deleteTask } from "../actions/toDoList";
 import { getTasks, getToDoInserting, getErrorOnInserting, getSelectedTask } from '../selectors/task';
 import ToDoList from '../components/ToDoList';
 import ToDoForm from '../components/ToDoForm';
@@ -14,26 +14,18 @@ import DeletePrompt from '../components/DeletePrompt';
 
 class ToDoListContainer extends Component {
 
-    constructor(props) {
-        super(props);
-        this.state = { showModal: false }
-    }
     componentDidMount = () => {
         this.props.fetchToDoList();
     }
 
     renderEditForm = () => (
         <ToDoForm
-            onBack={this.handleOnBack}
+            onBack={this.goHome}
             onSubmit={this.handleSubmit}
             inserting={this.props.inserting}
             errorOnInserting={this.props.errorOnInserting}
         />
     );
-
-    handleOnSubmitSuccess = () => {
-        this.props.history.push(ROUTE_HOME);
-    }
 
     handleSubmit = values => {
         //convert minutes to seconds before save
@@ -44,46 +36,32 @@ class ToDoListContainer extends Component {
     componentWillReceiveProps(nextProps) {
         if(this.props.inserting && !nextProps.inserting && !this.props.errorOnInserting)
         {
-            this.props.history.push(ROUTE_HOME);
+            this.goHome();
         }
     }
 
     handleAddButton = () => {
         if(this.props.showEdit)
         {
-            this.props.history.push(ROUTE_HOME);
+            this.goHome();
         }
         else
         {
             this.props.history.push(ROUTE_TASK_NEW);
         }
-        
     }
 
-    handleOnBack = () => {
+    goHome = () => {
         this.props.history.push(ROUTE_HOME);
-    }
-
-    handleOnDelete = () => {
-        this.setState({ showModal: true });
-    }
-
-    handleCloseOnDelete = () => {
-        this.setState({ showModal: false });
-    }
-
-    handleOnSelect = id => {
-        this.props.setSelectedTask(id);
     }
 
     handleOnDeleteConfirmation = () => {
         this.props.deleteTask(this.props.selectedTask);
-        this.setState({ showModal: false });
+        this.goHome();
     }
     
     render() {
-        const { tasks, showEdit, selectedTask } = this.props;
-        const { showModal } = this.state;
+        const { tasks, showEdit, showDelete, selectedTask } = this.props;
         return (
             <div>
                 {showEdit && this.renderEditForm()}
@@ -105,8 +83,8 @@ class ToDoListContainer extends Component {
                     tasks={tasks}/>
                 <DeletePrompt 
                     taskTitle={ selectedTask && selectedTask.title }
-                    show={showModal}
-                    onCloseModal={this.handleCloseOnDelete}
+                    show={selectedTask != null && showDelete === true}
+                    onCloseModal={this.goHome}
                     onDeleteConfirmation={this.handleOnDeleteConfirmation}
                     />
             </div>
@@ -117,20 +95,21 @@ class ToDoListContainer extends Component {
 ToDoListContainer.propTypes = {
     fetchToDoList: PropTypes.func.isRequired,
     showEdit: PropTypes.bool,
+    showDelete: PropTypes.bool,
     inserting: PropTypes.bool.isRequired,
     errorOnInserting: PropTypes.bool.isRequired,
+    taskId: PropTypes.string,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state, props) => ({
     tasks: getTasks(state),
     inserting: getToDoInserting(state),
     errorOnInserting: getErrorOnInserting(state),
-    selectedTask: getSelectedTask(state)
+    selectedTask: getSelectedTask(state, props)
 })
 const mapDispatchToProps = {
     fetchToDoList,
     insertTask,
-    setSelectedTask,
     deleteTask
 }
 
