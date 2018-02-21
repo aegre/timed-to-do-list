@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 
-import { fetchToDoList, insertTask, deleteTask } from "../actions/toDoList";
+import { fetchToDoList, insertTask, deleteTask, updateTask } from "../actions/toDoList";
 import { getTasks, getToDoInserting, getErrorOnInserting, getSelectedTask } from '../selectors/task';
 import ToDoList from '../components/ToDoList';
 import ToDoForm from '../components/ToDoForm';
@@ -22,7 +22,18 @@ class ToDoListContainer extends Component {
         //convert minutes to seconds before save
         const task = { ...values };
         task.duration*= 60;
-        this.props.insertTask({ ...task });
+
+        const { taskId, selectedTask, insertTask, updateTask } = this.props;
+        //Update task
+        if( taskId !== undefined && selectedTask )
+        {
+            updateTask({ ...task }, taskId);
+        }
+        //Insert a new one
+        else
+        {
+            insertTask({ ...task });
+        }
     }
     componentWillReceiveProps(nextProps) {
         if(this.props.inserting && !nextProps.inserting && !this.props.errorOnInserting)
@@ -50,9 +61,27 @@ class ToDoListContainer extends Component {
         this.props.deleteTask(this.props.selectedTask);
         this.goHome();
     }
+
+    getInitialValues = selectedTask => (
+        {
+            title: selectedTask.title,
+            duration: selectedTask.duration/60,
+            description: selectedTask.description
+        }
+    )
     
     render() {
-        const { tasks, showEdit, showDelete, selectedTask } = this.props;
+        const { tasks, 
+            showEdit, 
+            showDelete, 
+            selectedTask, 
+            taskId,
+            errorOnInserting,
+            inserting
+         } = this.props;
+         const onEditionMode = taskId !== undefined;
+         const showEditModal = (showEdit === true && !onEditionMode) ||
+         ( onEditionMode && selectedTask && showEdit);
         return (
             <div>
                 <div className="to-do-list-container-label">
@@ -77,14 +106,20 @@ class ToDoListContainer extends Component {
                     onCloseModal={this.goHome}
                     onDeleteConfirmation={this.handleOnDeleteConfirmation}
                     />
-
-                <ToDoForm
-                    show={showEdit === true}
+                {
+                    showEditModal &&
+                    <ToDoForm
+                    editionMode={onEditionMode}
                     onCloseModal={this.goHome}
                     onSubmit={this.handleSubmit}
-                    inserting={this.props.inserting}
-                    errorOnInserting={this.props.errorOnInserting}
-                />
+                    inserting={inserting}
+                    errorOnInserting={errorOnInserting}
+                    task={selectedTask}
+                    initialValues={ selectedTask && this.getInitialValues(selectedTask)}
+                    show={ showEditModal }
+                    />    
+                }
+                
                 
             </div>
         );
@@ -98,6 +133,9 @@ ToDoListContainer.propTypes = {
     inserting: PropTypes.bool.isRequired,
     errorOnInserting: PropTypes.bool.isRequired,
     taskId: PropTypes.string,
+    insertTask: PropTypes.func.isRequired,
+    deleteTask: PropTypes.func.isRequired,
+    updateTask: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state, props) => ({
@@ -109,7 +147,8 @@ const mapStateToProps = (state, props) => ({
 const mapDispatchToProps = {
     fetchToDoList,
     insertTask,
-    deleteTask
+    deleteTask, 
+    updateTask
 }
 
 export default withRouter(connect(mapStateToProps,mapDispatchToProps)(ToDoListContainer));

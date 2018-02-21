@@ -24,7 +24,7 @@ DeletePrompt.propTypes = {
     taskTitle: PropTypes.string,
     show: PropTypes.bool.isRequired,
     onCloseModal: PropTypes.func.isRequired,
-    onDeleteConfirmation: PropTypes.func.isRequired,
+    onDeleteConfirmation: PropTypes.func,
 };
 
 export default DeletePrompt;

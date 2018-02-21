@@ -27,7 +27,7 @@ ModalWindow.propTypes = {
         PropTypes.node
     ]).isRequired,
     onClickOutside: PropTypes.func,
-    show: PropTypes.bool.isRequired,
+    show: PropTypes.bool,
 };
 
 export default ModalWindow;

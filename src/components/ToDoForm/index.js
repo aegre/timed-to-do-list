@@ -25,13 +25,16 @@ const ToDoForm = ({
     handleSubmit,
     inserting,
     errorOnInserting,
-    show
+    show,
+    task,
+    editionMode,
+    initialValues
 }) => {
     return (
         <ModalWindow show={show} onClickOutside={onCloseModal}>
             <div className="to-do-form-container">
                 <div className="to-do-form">
-                    <h2>Nueva tarea</h2>
+                    <h2>{editionMode ? "Editar tarea" : "Nueva tarea"}</h2>
                     <form onSubmit={handleSubmit}>
                         <Field name="title" separationType="row" component={formField} type="text" label="Nombre*"></Field>
                         <Field name="description"  separationType="row" component={formField} type="textarea" label="Descripción"></Field>
@@ -65,7 +68,9 @@ ToDoForm.propTypes = {
     handleSubmit: PropTypes.func.isRequired,
     inserting: PropTypes.bool.isRequired,
     errorOnInserting: PropTypes.bool.isRequired,
-    show: PropTypes.bool.isRequired,
+    show: PropTypes.bool,
+    task: PropTypes.object,
+    editionMode: PropTypes.bool,
 };
 
 //validate fields
@@ -88,7 +93,8 @@ const validate = values => {
 const connectedToDoForm = reduxForm(
     {
         form: "taskForm",
-        validate
+        validate,
+        enableReinitialize: true
     })(ToDoForm)
 
 
