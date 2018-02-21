@@ -1,11 +1,19 @@
 .to-do-list-container-label {
-    margin: 10px;
+    display: flex;
+    width: 95%;
+    margin: 0 auto;
+    height: 35px;
+}
+
+.to-do-list-container-filter {
     display: flex;
     width: 95%;
     margin: 0 auto;
     align-content: center;
-    height: 40px;
+    vertical-align: middle;
+    padding-top: 5px;
 }
+
 
 .col {
     display: inline-block;

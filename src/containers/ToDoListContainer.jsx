@@ -13,6 +13,7 @@ import "./styles.css"
 import { ROUTE_TASK_NEW, ROUTE_HOME } from '../constants/routes';
 import DeletePrompt from '../components/DeletePrompt';
 import { getSelectedFilter } from '../selectors/general';
+import FilterSelector from '../components/FilterSelector';
 
 class ToDoListContainer extends Component {
 
@@ -85,6 +86,10 @@ class ToDoListContainer extends Component {
             description: selectedTask.description
         }
     )
+
+    handleFiltterSelection = filter => {
+        this.props.history.push(`${ROUTE_HOME}?filter=${filter}`)
+    }
     
     render() {
         const { onProgressTasks, 
@@ -94,13 +99,20 @@ class ToDoListContainer extends Component {
             taskId,
             errorOnInserting,
             inserting,
-            completedTasks
+            completedTasks,
+            selectedFilter
          } = this.props;
          const onEditionMode = taskId !== undefined;
          const showEditModal = (showEdit === true && !onEditionMode) ||
          ( onEditionMode && selectedTask && showEdit);
         return (
+            
             <div>
+                <div className="to-do-list-container-filter">
+                    <FilterSelector
+                    selectedFilter={selectedFilter}
+                    onSelectedFilter={this.handleFiltterSelection}/>
+                </div>
                 <div className="to-do-list-container-label">
                     <div className="section-header">
                         <h3>Tareas en progreso:</h3>
@@ -113,6 +125,7 @@ class ToDoListContainer extends Component {
                         </div>
                     </div>
                 </div>
+                
                 <ToDoList
                     onComplete={this.handleComplete}
                     tasks={onProgressTasks}

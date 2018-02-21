@@ -16,3 +16,5 @@ export const FILTER_SHORT = "short";
 export const FILTER_MEDIUM = "medium";
 
 export const FILTER_LONG = "long";
+
+export const FILTER_ALL = "all";
