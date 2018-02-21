@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { reduxForm, Field } from "redux-form";
 import "./styles.css";
 import ModalWindow from '../ModalWindow';
+import { renderLoading } from '../../helpers/renderLoading';
 
 const formField = ({input, meta, type, label, name, placeholder
 ,min, max}) => (
@@ -50,10 +51,10 @@ const ToDoForm = ({
                         <div className=" validation-error row">
                             <span>Ocurrió un error, por favor intente de nuevo.</span>
                         </div>}
-
+                        
                         { inserting &&
                         <div className="row">
-                            <span>Guardando...</span>
+                            {renderLoading("s")}
                         </div>
                         }
                     </form>

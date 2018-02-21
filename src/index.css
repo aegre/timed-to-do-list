@@ -172,3 +172,8 @@ a {
 .svg-inline--fa { 
   height: 100%;
 }
+
+.loading-image.s {
+  max-width: 80px;
+  max-height: 80px;
+}
