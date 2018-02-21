@@ -8,6 +8,7 @@
     margin-top: 10px;
     font-size: 0.7em;
     font-weight: lighter;
+    text-decoration: none;
 }
 
 .to-do-list-item-property {
@@ -52,6 +53,12 @@
 .to-do-list-item-actions {
     display: flex;
     flex-direction: column;
+    width: 10%;
+}
+
+.completed {
+    text-decoration: line-through;
+    color: #999;
 }
 
 

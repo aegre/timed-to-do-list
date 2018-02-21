@@ -16,11 +16,11 @@
 }
 
 .section-header{
-    width: 50%;
+    width: 80%;
 }
 
 .to-do-list-container-actions {
-    width: 50%;
+    width: 20%;
     align-content: center;
     justify-content: flex-end;
     display: flex;
