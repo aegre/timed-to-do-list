@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 
 import { fetchToDoList, insertTask, deleteTask, updateTask } from "../actions/toDoList";
-import { getTasks, getToDoInserting, getErrorOnInserting, getSelectedTask } from '../selectors/task';
+import { getToDoInserting, getErrorOnInserting, getSelectedTask, getOnProgressTasks, getCompletedTasks } from '../selectors/task';
 import ToDoList from '../components/ToDoList';
 import ToDoForm from '../components/ToDoForm';
 
@@ -15,7 +15,10 @@ import DeletePrompt from '../components/DeletePrompt';
 class ToDoListContainer extends Component {
 
     componentDidMount = () => {
+        if(this.props.onProgressTasks.length === 0
+        && this.props.completedTasks.length === 0){
         this.props.fetchToDoList();
+        }
     }
 
     handleSubmit = values => {
@@ -76,13 +79,14 @@ class ToDoListContainer extends Component {
     )
     
     render() {
-        const { tasks, 
+        const { onProgressTasks, 
             showEdit, 
             showDelete, 
             selectedTask, 
             taskId,
             errorOnInserting,
-            inserting
+            inserting,
+            completedTasks
          } = this.props;
          const onEditionMode = taskId !== undefined;
          const showEditModal = (showEdit === true && !onEditionMode) ||
@@ -91,7 +95,7 @@ class ToDoListContainer extends Component {
             <div>
                 <div className="to-do-list-container-label">
                     <div className="section-header">
-                        <h3>Tareas:</h3>
+                        <h3>Tareas en progreso:</h3>
                     </div>
                     
                     <div className="to-do-list-container-actions tooltip">
@@ -102,11 +106,18 @@ class ToDoListContainer extends Component {
                     </div>
                 </div>
                 <ToDoList
-                    onSelect={this.handleOnSelect} 
-                    onDelete={this.handleOnDelete} 
                     onComplete={this.handleComplete}
-                    tasks={tasks}
+                    tasks={onProgressTasks}
                     />
+                <div className="to-do-list-container-label">
+                    <div className="section-header">
+                        <h3>Tareas completadas:</h3>
+                    </div>
+                </div>
+                <ToDoList
+                    tasks={completedTasks}
+                    />
+                
                 <DeletePrompt 
                     taskTitle={ selectedTask && selectedTask.title }
                     show={selectedTask != null && showDelete === true}
@@ -143,10 +154,13 @@ ToDoListContainer.propTypes = {
     insertTask: PropTypes.func.isRequired,
     deleteTask: PropTypes.func.isRequired,
     updateTask: PropTypes.func.isRequired,
+    onProgressTasks: PropTypes.array.isRequired,
+    completedTasks: PropTypes.array.isRequired,
 };
 
 const mapStateToProps = (state, props) => ({
-    tasks: getTasks(state),
+    onProgressTasks: getOnProgressTasks(state),
+    completedTasks: getCompletedTasks(state),
     inserting: getToDoInserting(state),
     errorOnInserting: getErrorOnInserting(state),
     selectedTask: getSelectedTask(state, props)

@@ -41,6 +41,8 @@ export const updateTask = (task, taskid) => (
                 if(data.status === 200)
                 {
                     dispatch(setErrorOnInserting(false));
+                    //reload the collection
+                    dispatch(fetchToDoList());
                 }
                 else {
                     dispatch(setErrorOnInserting(true));
@@ -64,6 +66,8 @@ export const insertTask = task => (
                 if(data.status === 200)
                 {
                     dispatch(setErrorOnInserting(false));
+                    //reload the collection
+                    dispatch(fetchToDoList());
                 }
                 else {
                     dispatch(setErrorOnInserting(true));

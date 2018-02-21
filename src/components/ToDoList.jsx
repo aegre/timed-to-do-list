@@ -12,6 +12,7 @@ const ToDoList = ({tasks, onComplete}) => {
     return (
         <div>
             {tasks && renderTasks(tasks, onComplete)}
+            {tasks && tasks.length === 0 && <div className="text-center">Sin tareas</div> }
         </div>
     );
 };

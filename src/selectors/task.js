@@ -4,6 +4,13 @@ export const getTasks = createSelector(
     state => state.task.tasks, tasks => tasks
 )
 
+export const getOnProgressTasks = createSelector(
+    state => getTasks(state), tasks => tasks.filter( task => task.status === 0)
+)
+
+export const getCompletedTasks = createSelector(
+    state => getTasks(state), tasks => tasks.filter( task => task.status === 1)
+)
 export const getToDoInserting = createSelector(
     state => state.task.inserting, inserting => inserting
 )
