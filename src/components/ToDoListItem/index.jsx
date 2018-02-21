@@ -8,7 +8,8 @@ import { secondToMinutes } from '../../helpers/secondsToMinute';
 import { ROUTE_TASK_EDIT, ROUTE_TASK_DELETE } from '../../constants/routes';
 
 const ToDoListItem = ({ title, description, duration,
-    elapsed, creationDate, _id, onComplete, status
+    elapsed, creationDate, _id, onComplete, status,
+    finishDate
 }) => {
     return (
         <div className="to-do-list-item card">
@@ -27,9 +28,16 @@ const ToDoListItem = ({ title, description, duration,
                     <span className="to-do-list-item-property">Transcurrido:</span> <span>{secondToMinutes(elapsed)}      </span>
                     <span className="to-do-list-item-property">Asignado:</span> <span>{secondToMinutes(duration)}</span>
                 </div>
-                <div className="to-do-list-item-creation">
-                    <span>{`Creada: ${formatDate(creationDate)}`}</span>
-                </div>
+                { status === 0 &&
+                    <div className="to-do-list-item-creation">
+                        <span>{`Creada: ${formatDate(creationDate)}`}</span>
+                    </div>
+                }
+                { status === 1 &&
+                 <div className="to-do-list-item-creation">
+                 <span>{`Finalizada: ${formatDate(finishDate)}`}</span>
+             </div>
+                }
             </div>
             <div className="to-do-list-item-actions">
             {status === 0 && 
