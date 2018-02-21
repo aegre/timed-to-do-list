@@ -1,11 +1,13 @@
 import { createSelector } from "reselect";
+import { getTaskFilter } from "../helpers/taskFilter";
 
 export const getTasks = createSelector(
     state => state.task.tasks, tasks => tasks
 )
 
 export const getOnProgressTasks = createSelector(
-    state => getTasks(state), tasks => tasks.filter( task => task.status === 0)
+    (state,props) => getTasks(state).filter( task => getTaskFilter(props)(task)) 
+    , tasks => tasks.filter( task => task.status === 0)
 )
 
 export const getCompletedTasks = createSelector(

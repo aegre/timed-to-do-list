@@ -17,7 +17,7 @@
 
 .to-do-list-item-container {
     display: block;
-    width: 90%;
+    width: 80%;
 }
 
 .to-do-list-item {
@@ -53,7 +53,7 @@
 .to-do-list-item-actions {
     display: flex;
     flex-direction: column;
-    width: 10%;
+    width: 20%;
 }
 
 .completed {

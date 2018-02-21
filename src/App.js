@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { LastLocationProvider } from 'react-router-last-location';
+
 import AppHeader from './components/AppHeader';
 import ToDoListContainer from './containers/ToDoListContainer';
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { ROUTE_HOME, ROUTE_TASK, ROUTE_TASK_NEW, ROUTE_TASK_EDIT, ROUTE_TASK_DELETE } from './constants/routes';
+
 
 class App extends Component {
 
@@ -23,18 +26,20 @@ class App extends Component {
   render() {
     return (
       <Router>
-        <div className="App">
-          <AppHeader/>
-          <div className="content">
-            <Route exact path={ROUTE_HOME} component={ToDoListContainer}/>
-            <Switch>
-              <Route exact path={ROUTE_TASK} component={ToDoListContainer}/>
-              <Route path={ROUTE_TASK_NEW} component={this.renderToDoContainerNew}/>
-              <Route path={ROUTE_TASK_EDIT} render={props => this.renderToDoContainerUpdate(props)}/>
-              <Route path={ROUTE_TASK_DELETE} render={props => this.renderToDoContainerDelete(props)}/>
-            </Switch>
+        <LastLocationProvider>
+          <div className="App">
+            <AppHeader/>
+            <div className="content">
+              <Route exact path={ROUTE_HOME} component={ToDoListContainer}/>
+              <Switch>
+                <Route exact path={ROUTE_TASK} component={ToDoListContainer}/>
+                <Route path={ROUTE_TASK_NEW} component={this.renderToDoContainerNew}/>
+                <Route path={ROUTE_TASK_EDIT} render={props => this.renderToDoContainerUpdate(props)}/>
+                <Route path={ROUTE_TASK_DELETE} render={props => this.renderToDoContainerDelete(props)}/>
+              </Switch>
+            </div>
           </div>
-        </div>
+        </LastLocationProvider>
       </Router>
     );
   }
