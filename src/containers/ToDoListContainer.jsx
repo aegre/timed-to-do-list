@@ -52,6 +52,11 @@ class ToDoListContainer extends Component {
             this.props.history.push(ROUTE_TASK_NEW);
         }
     }
+    
+    handleComplete = taskId => {
+        //Send the update task method with status value = 1 (completed)
+        this.props.updateTask({ status: 1}, taskId);
+    }
 
     goHome = () => {
         this.props.history.push(ROUTE_HOME);
@@ -99,7 +104,9 @@ class ToDoListContainer extends Component {
                 <ToDoList
                     onSelect={this.handleOnSelect} 
                     onDelete={this.handleOnDelete} 
-                    tasks={tasks}/>
+                    onComplete={this.handleComplete}
+                    tasks={tasks}
+                    />
                 <DeletePrompt 
                     taskTitle={ selectedTask && selectedTask.title }
                     show={selectedTask != null && showDelete === true}

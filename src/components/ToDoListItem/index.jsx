@@ -8,7 +8,7 @@ import { secondToMinutes } from '../../helpers/secondsToMinute';
 import { ROUTE_TASK_EDIT, ROUTE_TASK_DELETE } from '../../constants/routes';
 
 const ToDoListItem = ({ title, description, duration,
-    elapsed, creationDate, _id
+    elapsed, creationDate, _id, onComplete
 }) => {
     return (
         <div className="to-do-list-item card">
@@ -34,7 +34,7 @@ const ToDoListItem = ({ title, description, duration,
             <div className="to-do-list-item-actions">
                 <div className="to-do-list-item-complete">
                     <span className="hide-on-low">Completar</span>
-                    <div className="fas-button"><i className="fas fa-check"></i></div>
+                    <div className="fas-button" onClick={() => onComplete(_id)}><i className="fas fa-check"></i></div>
                 </div>
                 <div className="to-do-list-icons">
                     <div>
@@ -54,7 +54,8 @@ const ToDoListItem = ({ title, description, duration,
 
 ToDoListItem.propTypes = {
     title: PropTypes.string.isRequired,
-    _id: PropTypes.string.isRequired
+    _id: PropTypes.string.isRequired,
+    onComplete: PropTypes.func,
 };
 
 export default ToDoListItem;
