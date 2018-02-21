@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
+import { withLastLocation } from 'react-router-last-location';
 
 import { fetchToDoList, insertTask, deleteTask, updateTask } from "../actions/toDoList";
 import { getToDoInserting, getErrorOnInserting, getSelectedTask, getOnProgressTasks, getCompletedTasks } from '../selectors/task';
@@ -11,6 +12,7 @@ import ToDoForm from '../components/ToDoForm';
 import "./styles.css"
 import { ROUTE_TASK_NEW, ROUTE_HOME } from '../constants/routes';
 import DeletePrompt from '../components/DeletePrompt';
+import { getSelectedFilter } from '../selectors/general';
 
 class ToDoListContainer extends Component {
 
@@ -62,7 +64,13 @@ class ToDoListContainer extends Component {
     }
 
     goHome = () => {
-        this.props.history.push(ROUTE_HOME);
+        const { lastLocation } = this.props;
+        if(lastLocation && lastLocation.pathname){
+            this.props.history.push(`${ROUTE_HOME}${lastLocation.search}`);
+        }
+        else {
+            this.props.history.push(ROUTE_HOME);
+        }
     }
 
     handleOnDeleteConfirmation = () => {
@@ -156,14 +164,16 @@ ToDoListContainer.propTypes = {
     updateTask: PropTypes.func.isRequired,
     onProgressTasks: PropTypes.array.isRequired,
     completedTasks: PropTypes.array.isRequired,
+    lastLocation: PropTypes.object,
 };
 
 const mapStateToProps = (state, props) => ({
-    onProgressTasks: getOnProgressTasks(state),
+    onProgressTasks: getOnProgressTasks(state, props),
     completedTasks: getCompletedTasks(state),
     inserting: getToDoInserting(state),
     errorOnInserting: getErrorOnInserting(state),
-    selectedTask: getSelectedTask(state, props)
+    selectedTask: getSelectedTask(state, props),
+    selectedFilter: getSelectedFilter(props)
 })
 const mapDispatchToProps = {
     fetchToDoList,
@@ -172,4 +182,4 @@ const mapDispatchToProps = {
     updateTask
 }
 
-export default withRouter(connect(mapStateToProps,mapDispatchToProps)(ToDoListContainer));
+export default withLastLocation(withRouter(connect(mapStateToProps,mapDispatchToProps)(ToDoListContainer)));
