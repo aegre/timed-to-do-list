@@ -43,17 +43,14 @@ export const updateTask = (task, taskid) => (
                     dispatch(setErrorOnInserting(false));
                     //reload the collection
                     dispatch(fetchToDoList());
+                    dispatch(setToDoInserting(false));
                 }
                 else {
                     dispatch(setErrorOnInserting(true));
+                    dispatch(setToDoInserting(false));
                 }
             }
         ).catch( () => dispatch(setErrorOnInserting(true)))
-        .finally(
-            () => {
-                dispatch(setToDoInserting(false));
-            }
-        )
     }
 )
 
@@ -68,16 +65,13 @@ export const insertTask = task => (
                     dispatch(setErrorOnInserting(false));
                     //reload the collection
                     dispatch(fetchToDoList());
+                    dispatch(setToDoInserting(false));
                 }
                 else {
                     dispatch(setErrorOnInserting(true));
+                    dispatch(setToDoInserting(false));
                 }
             }
         ).catch( () => dispatch(setErrorOnInserting(true)))
-        .finally(
-            () => {
-                dispatch(setToDoInserting(false));
-            }
-        )
     }
 )
