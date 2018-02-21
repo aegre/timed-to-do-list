@@ -31,16 +31,23 @@ const ToDoListItem = ({ title, description, duration,
                     <span>{`Creada: ${formatDate(creationDate)}`}</span>
                 </div>
             </div>
-            <div className="to-do-list-icons">
-                <div>
-                    <Link to={ROUTE_TASK_EDIT.replace(":id",_id)} className="fas-button">
-                        <i className="far fa-edit"></i>
-                    </Link>
-                    <Link to={ROUTE_TASK_DELETE.replace(":id",_id)} className="fas-button">
-                        <i className="fas fa-trash"></i>
-                    </Link>
+            <div className="to-do-list-item-actions">
+                <div className="to-do-list-item-complete">
+                    <span className="hide-on-low">Completar</span>
+                    <div className="fas-button"><i className="fas fa-check"></i></div>
+                </div>
+                <div className="to-do-list-icons">
+                    <div>
+                        <Link to={ROUTE_TASK_EDIT.replace(":id",_id)} className="fas-button">
+                            <i className="far fa-edit"></i>
+                        </Link>
+                        <Link to={ROUTE_TASK_DELETE.replace(":id",_id)} className="fas-button">
+                            <i className="fas fa-trash"></i>
+                        </Link>
+                    </div>
                 </div>
             </div>
+            
         </div>
     );
 };
