@@ -1,6 +1,6 @@
 
 .to-do-list-item-title {
-    font-size: 1.4em;
+    font-size: 1.5em;
     font-weight: bold;
 }
 
@@ -13,3 +13,24 @@
 .to-do-list-item-property {
     font-weight: bold;
 }
+
+.to-do-list-item-container {
+    display: block;
+    width: 90%;
+}
+
+.to-do-list-item {
+    display: flex;
+}
+
+.to-do-list-icons {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    width: 10%;
+    font-size: 14.5pt;
+}
+
+
+
+

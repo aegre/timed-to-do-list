@@ -6,6 +6,11 @@ body {
   color: #666;
 }
 
+.content {
+  max-width: 1100px;
+  margin: 0 auto 0 auto;
+}
+
 .tooltip {
   position: relative;
   display: inline-block;
@@ -22,8 +27,7 @@ body {
   position: absolute;
   z-index: 1;
   bottom: 125%;
-  left: 50%;
-  margin-left: -60px;
+  right: -42px;
   opacity: 0;
   transition: opacity 0.6s;
 }
@@ -43,6 +47,8 @@ body {
   visibility: visible;
   opacity: 0.5;
 }
+
+
 
 .card {
   margin: 15px;
@@ -138,4 +144,31 @@ a {
 #main-menu a {
   color: #fff;
   font-size: 1.2em;
+}
+
+@media only screen and (max-width: 700px) {
+  .hide-on-low {
+    display: none;
+  }
+}
+
+
+.fas-button {
+  cursor: pointer;
+  background-color: Transparent;
+  background-repeat:no-repeat;
+  border: none;
+  cursor:pointer;
+  overflow: hidden;
+  outline:none;
+  color: #666
+}
+
+.fas-button:hover {
+  color: #8c8c8c;
+}
+
+/* FONT AWESOME */
+.svg-inline--fa { 
+  height: 100%;
 }
