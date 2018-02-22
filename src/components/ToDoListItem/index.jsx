@@ -44,13 +44,30 @@ const renderIcons = (status, id) => (
     </div>
 )
 
+const allowDrop = ev => {
+    ev.preventDefault();
+}
+
+const sentDragData = task => ( 
+    ev => {
+    ev.dataTransfer.setData("taskId", task);
+    }
+)
+
 const ToDoListItem = ({ title, description, duration,
     elapsed, creationDate, _id, onComplete, status,
     finishDate, index, startedTimer,
-    onStop, onPause, onStart
+    onStop, onPause, onStart,
+    currentIndexOnList,
+    onDrop
 }) => {
     return (
-        <div className="to-do-list-item card">
+        <div className="to-do-list-item card" 
+        onDragStart={sentDragData(_id)} 
+        onDragOver={allowDrop} 
+        draggable={ status === 0 ? true : false}
+        onDrop={ev => { onDrop(ev.dataTransfer.getData("taskId"), currentIndexOnList)}} 
+        >
             <div className="to-do-list-item-container">
                 <div className={`to-do-list-item-title row ${status && "completed"}`}>
                     <span>
@@ -110,6 +127,8 @@ ToDoListItem.propTypes = {
     onStart: PropTypes.func,
     onStop: PropTypes.func,
     onPause: PropTypes.func,
+    currentIndexOnList: PropTypes.number.isRequired,
+    onDrop: PropTypes.func,
 };
 
 export default ToDoListItem;

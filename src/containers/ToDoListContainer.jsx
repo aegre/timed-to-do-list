@@ -55,6 +55,35 @@ class ToDoListContainer extends Component {
         }
     }
 
+    //Handle drop for progress task
+    handleDropInProgress = taskId =>
+    {
+        this.stopTimerIfRunning();
+        this.updateTaskIndex(taskId,0);
+    }
+
+    stopTimerIfRunning = () => {
+        this.props.initializedTimer && this.handlePauseTimer();
+    }
+
+    updateTaskIndex = (id, index) => {
+        this.props.updateTask({index}, id, true);
+    }
+
+    //handle drop for pending task
+    handleDropInPending = (taskId, newIndex) =>
+    {
+        const { selectedTask } = this.props;
+        //Is the on progress task stop the timer
+        if(selectedTask && selectedTask[0]._id === taskId)
+        {
+            this.stopTimerIfRunning();
+        }
+        this.updateTaskIndex(taskId, newIndex + 1);
+        
+
+    }
+
     //timer tick
     handleTick = (cont) => {
         
@@ -88,9 +117,14 @@ class ToDoListContainer extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if(this.props.inserting && !nextProps.inserting && !this.props.errorOnInserting)
+        const { lastLocation, errorOnInserting, inserting } = this.props;
+        if(inserting && !nextProps.inserting && errorOnInserting)
         {
-            this.goHome();
+            //If does not come from home // comes from edit o new, change route
+            if(lastLocation.pathname !== ROUTE_HOME)
+            {
+                this.goHome();
+            }
         }
     }
 
@@ -223,12 +257,14 @@ class ToDoListContainer extends Component {
                 </div>
                 
                 <ToDoList
+                    onDrop={this.handleDropInProgress}
                     onStartTimer={this.handleStartTimer}
                     onStopTimer={this.handleStopTimer}
                     onPauseTimer={this.handlePauseTimer}
                     onComplete={this.handleComplete}
                     startedTimer={initializedTimer}
                     tasks={onProgressTask}
+                    acceptDrop={true}
                     />
                 <div className="to-do-list-container-label">
                     <div className="section-header">
@@ -237,6 +273,7 @@ class ToDoListContainer extends Component {
                 </div>
 
                 <ToDoList
+                    onDrop={this.handleDropInPending}
                     onComplete={this.handleComplete}
                     tasks={pendingTasks}
                     />
