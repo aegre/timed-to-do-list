@@ -4,8 +4,13 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { withLastLocation } from 'react-router-last-location';
 
-import { fetchToDoList, insertTask, deleteTask, updateTask } from "../actions/toDoList";
-import { getToDoInserting, getErrorOnInserting, getSelectedTask, getOnProgressTasks, getCompletedTasks } from '../selectors/task';
+import { fetchToDoList, insertTask, deleteTask, updateTask, updateTaskDuration } from "../actions/toDoList";
+import { getToDoInserting, 
+    getErrorOnInserting, 
+    getSelectedTask, 
+    getCompletedTasks, 
+    getOnProgressTask, 
+    getPendingTasks } from '../selectors/task';
 import ToDoList from '../components/ToDoList';
 import ToDoForm from '../components/ToDoForm';
 
@@ -14,14 +19,21 @@ import { ROUTE_TASK_NEW, ROUTE_HOME } from '../constants/routes';
 import DeletePrompt from '../components/DeletePrompt';
 import { getSelectedFilter } from '../selectors/general';
 import FilterSelector from '../components/FilterSelector';
+import { getInitializedTimer } from '../selectors/timer';
+import { startTimer, stopTimer } from '../actions/timer';
 
 class ToDoListContainer extends Component {
-
+    constructor(props){
+        super(props);
+        this.state = { timer: null }
+    }
     componentDidMount = () => {
-        if(this.props.onProgressTasks.length === 0
+        if(this.props.onProgressTask.length === 0
         && this.props.completedTasks.length === 0){
         this.props.fetchToDoList();
         }
+        //initialized the timer stopped
+        this.props.stopTimer();
     }
 
     handleSubmit = values => {
@@ -41,6 +53,38 @@ class ToDoListContainer extends Component {
             insertTask({ ...task });
         }
     }
+
+    handleTick = (cont) => {
+        
+        const { updateTaskDuration, onProgressTask } = this.props;
+        const task = onProgressTask[0];
+
+        //create the action pay load
+        const payload= { id: task._id, 
+            elapsed: task.elapsed + 1 };
+        
+        //Finish the task
+        if(payload.elapsed >= task.duration)
+        {
+            this.handlePauseTimer();
+            this.props.updateTask(
+                { elapsed: payload.elapsed, status: 1 }, payload.id)
+        }
+        //Update the elapsed time
+        else
+        {            
+            //Call the action
+            updateTaskDuration(payload);
+
+            //Update each 5 seconds
+            if( cont % 5 === 0)
+            {
+                this.props.updateTask({ elapsed: payload.elapsed }, payload.id);
+            }
+        }
+        
+    }
+
     componentWillReceiveProps(nextProps) {
         if(this.props.inserting && !nextProps.inserting && !this.props.errorOnInserting)
         {
@@ -74,6 +118,13 @@ class ToDoListContainer extends Component {
         }
     }
 
+    componentWillUnmount = () => {
+        if(this.props.initializedTimer){
+            this.handlePauseTimer();
+        }
+
+    }
+
     handleOnDeleteConfirmation = () => {
         this.props.deleteTask(this.props.selectedTask);
         this.goHome();
@@ -87,12 +138,52 @@ class ToDoListContainer extends Component {
         }
     )
 
+    handlePauseTimer = () => {
+        //Stop the timer in the state
+        this.props.stopTimer();
+        //stop timer in the component
+        this.stopTimer();
+
+        const { elapsed, _id} = this.props.onProgressTask[0];
+        //Save changes
+        this.props.updateTask({ elapsed }, _id);
+    }
+
+    startTimer = () => {
+        var cont = 0;
+        const timer = setInterval( () => { cont++;
+        this.handleTick(cont)}, 1000);
+        this.setState({ timer });
+    }
+
+    stopTimer = () => {
+        //Remove timer
+        clearInterval(this.state.timer);
+    }
+
+    handleStartTimer = () => {
+        //start timer in the state
+        this.props.startTimer();
+        //start timer in the component
+        this.startTimer();
+    }
+
+    handleStopTimer = () => {
+        this.props.stopTimer();
+        //stop timer in the component
+        this.stopTimer();
+        const { _id} = this.props.onProgressTask[0];
+        //Save changes
+        this.props.updateTask({ elapsed: 0 }, _id);
+    }
+
     handleFiltterSelection = filter => {
         this.props.history.push(`${ROUTE_HOME}?filter=${filter}`)
     }
     
     render() {
-        const { onProgressTasks, 
+        const { onProgressTask,
+            pendingTasks, 
             showEdit, 
             showDelete, 
             selectedTask, 
@@ -100,7 +191,8 @@ class ToDoListContainer extends Component {
             errorOnInserting,
             inserting,
             completedTasks,
-            selectedFilter
+            selectedFilter,
+            initializedTimer
          } = this.props;
          const onEditionMode = taskId !== undefined;
          const showEditModal = (showEdit === true && !onEditionMode) ||
@@ -115,7 +207,7 @@ class ToDoListContainer extends Component {
                 </div>
                 <div className="to-do-list-container-label">
                     <div className="section-header">
-                        <h3>Tareas en progreso:</h3>
+                        <h3>En progreso:</h3>
                     </div>
                     
                     <div className="to-do-list-container-actions tooltip">
@@ -127,12 +219,28 @@ class ToDoListContainer extends Component {
                 </div>
                 
                 <ToDoList
+                    onStartTimer={this.handleStartTimer}
+                    onStopTimer={this.handleStopTimer}
+                    onPauseTimer={this.handlePauseTimer}
                     onComplete={this.handleComplete}
-                    tasks={onProgressTasks}
+                    startedTimer={initializedTimer}
+                    tasks={onProgressTask}
                     />
                 <div className="to-do-list-container-label">
                     <div className="section-header">
-                        <h3>Tareas completadas:</h3>
+                        <h3>Pendientes:</h3>
+                    </div>
+                </div>
+
+                <ToDoList
+                    onComplete={this.handleComplete}
+                    tasks={pendingTasks}
+                    />
+
+
+                <div className="to-do-list-container-label">
+                    <div className="section-header">
+                        <h3>Completadas:</h3>
                     </div>
                 </div>
                 <ToDoList
@@ -175,24 +283,34 @@ ToDoListContainer.propTypes = {
     insertTask: PropTypes.func.isRequired,
     deleteTask: PropTypes.func.isRequired,
     updateTask: PropTypes.func.isRequired,
-    onProgressTasks: PropTypes.array.isRequired,
+    onProgressTask: PropTypes.array.isRequired,
+    pendingTasks: PropTypes.array.isRequired,
     completedTasks: PropTypes.array.isRequired,
     lastLocation: PropTypes.object,
+    initializedTimer: PropTypes.bool.isRequired,
+    startTimer: PropTypes.func.isRequired,
+    stopTimer: PropTypes.func.isRequired,
+    updateTaskDuration: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state, props) => ({
-    onProgressTasks: getOnProgressTasks(state, props),
+    pendingTasks: getPendingTasks(state, props),
     completedTasks: getCompletedTasks(state),
     inserting: getToDoInserting(state),
     errorOnInserting: getErrorOnInserting(state),
     selectedTask: getSelectedTask(state, props),
-    selectedFilter: getSelectedFilter(props)
+    selectedFilter: getSelectedFilter(props),
+    onProgressTask: getOnProgressTask(state, props),
+    initializedTimer: getInitializedTimer(state),
 })
 const mapDispatchToProps = {
     fetchToDoList,
     insertTask,
     deleteTask, 
-    updateTask
+    updateTask,
+    startTimer,
+    stopTimer,
+    updateTaskDuration
 }
 
 export default withLastLocation(withRouter(connect(mapStateToProps,mapDispatchToProps)(ToDoListContainer)));

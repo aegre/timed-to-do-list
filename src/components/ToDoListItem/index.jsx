@@ -7,9 +7,47 @@ import { formatDate } from '../../helpers/formatDate';
 import { secondToMinutes } from '../../helpers/secondsToMinute';
 import { ROUTE_TASK_EDIT, ROUTE_TASK_DELETE } from '../../constants/routes';
 
+
+const renderPause = (handler) => (
+    <div className="fas-button" onClick={handler}>
+        <i className="fas fa-pause"></i>
+    </div>
+)
+
+const renderPlay = (handler) => (
+    <div className="fas-button" onClick={handler}>
+        <i className="fas fa-play"></i>
+    </div>
+)
+const renderTimerIcons = (onStop, onPause, onStart, startedTimer) => (
+    <div>
+       
+        <div className="fas-button" onClick={onStop}>
+        <i className="fas fa-stop"></i>
+        </div>
+        { startedTimer && renderPause(onPause) }
+        { !startedTimer && renderPlay(onStart) }
+
+    </div>
+)
+
+const renderIcons = (status, id) => (
+    <div>
+        { status === 0 &&
+            <Link to={ROUTE_TASK_EDIT.replace(":id", id)} className="fas-button">
+                <i className="far fa-edit"></i>
+            </Link>
+        }
+        <Link to={ROUTE_TASK_DELETE.replace(":id", id)} className="fas-button">
+            <i className="fas fa-trash"></i>
+        </Link>
+    </div>
+)
+
 const ToDoListItem = ({ title, description, duration,
     elapsed, creationDate, _id, onComplete, status,
-    finishDate
+    finishDate, index, startedTimer,
+    onStop, onPause, onStart
 }) => {
     return (
         <div className="to-do-list-item card">
@@ -30,7 +68,7 @@ const ToDoListItem = ({ title, description, duration,
                 </div>
                 { status === 0 &&
                     <div className="to-do-list-item-creation">
-                        <span>{`Creada: ${formatDate(creationDate)}`}</span>
+                        <p>{`${formatDate(creationDate)}`}</p>
                     </div>
                 }
                 { status === 1 &&
@@ -40,23 +78,19 @@ const ToDoListItem = ({ title, description, duration,
                 }
             </div>
             <div className="to-do-list-item-actions">
-            {status === 0 && 
+            {status === 0 && (index !== 0 || !startedTimer)  && 
                 <div className="to-do-list-item-complete">                
                     <span className="hide-on-low">Completar</span>
                     <div className="fas-button" onClick={() => onComplete(_id)}><i className="fas fa-check"></i></div>
                 </div>
             }
                 <div className="to-do-list-icons">
-                    <div>
-                        { status === 0 &&
-                        <Link to={ROUTE_TASK_EDIT.replace(":id",_id)} className="fas-button">
-                            <i className="far fa-edit"></i>
-                        </Link>
-                        }
-                        <Link to={ROUTE_TASK_DELETE.replace(":id",_id)} className="fas-button">
-                            <i className="fas fa-trash"></i>
-                        </Link>
-                    </div>
+                    
+                    { !(status === 0 && index === 0 && startedTimer)
+                        && renderIcons(status, _id)}
+                    {status === 0 && index === 0 && 
+                        renderTimerIcons(onStop, onPause, onStart, startedTimer)}
+                    
                 </div>
             </div>
             
@@ -64,10 +98,18 @@ const ToDoListItem = ({ title, description, duration,
     );
 };
 
+
 ToDoListItem.propTypes = {
     title: PropTypes.string.isRequired,
     _id: PropTypes.string.isRequired,
     onComplete: PropTypes.func,
+    index: PropTypes.number.isRequired,
+    finishDate: PropTypes.string,
+    startDate: PropTypes.string,
+    startedTimer: PropTypes.bool,
+    onStart: PropTypes.func,
+    onStop: PropTypes.func,
+    onPause: PropTypes.func,
 };
 
 export default ToDoListItem;
