@@ -1,0 +1,65 @@
+
+.to-do-list-item-title {
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+.to-do-list-item-creation {
+    margin-top: 10px;
+    font-size: 0.7em;
+    font-weight: lighter;
+    text-decoration: none;
+}
+
+.to-do-list-item-property {
+    font-weight: bold;
+}
+
+.to-do-list-item-container {
+    display: block;
+    width: 80%;
+}
+
+.to-do-list-item {
+    display: flex;
+}
+
+.to-do-list-icons {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    font-size: 14.5pt;
+    height: 100%;
+}
+
+.to-do-list-item-complete {
+    display: flex;
+    justify-content: flex-end;
+    align-content: flex-start;
+    width: 100%;
+    height: 20px;
+}
+.to-do-list-item-complete .svg-inline--fa {
+    height: 20px;
+    margin-left: 10px;
+}
+
+.to-do-list-item-complete .fas-button {
+    height: 20px;
+    display: flex;
+    align-items: flex-end;
+}
+
+.to-do-list-item-actions {
+    display: flex;
+    flex-direction: column;
+    width: 20%;
+}
+
+.completed {
+    text-decoration: line-through;
+    color: #aaa;
+}
+
+
+
