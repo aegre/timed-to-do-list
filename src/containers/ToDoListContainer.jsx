@@ -57,19 +57,32 @@ class ToDoListContainer extends Component {
     handleTick = (cont) => {
         
         const { updateTaskDuration, onProgressTask } = this.props;
-        
+        const task = onProgressTask[0];
+
         //create the action pay load
-        const payload= { id: onProgressTask[0]._id, 
-            elapsed: onProgressTask[0].elapsed + 1 };
-
-        //Call the action
-        updateTaskDuration(payload);
-
-        //Update each 5 seconds
-        if( cont % 5 === 0)
+        const payload= { id: task._id, 
+            elapsed: task.elapsed + 1 };
+        
+        //Finish the task
+        if(payload.elapsed >= task.duration)
         {
-            this.props.updateTask({ elapsed: payload.elapsed }, payload.id);
+            this.handlePauseTimer();
+            this.props.updateTask(
+                { elapsed: payload.elapsed, status: 1 }, payload.id)
         }
+        //Update the elapsed time
+        else
+        {            
+            //Call the action
+            updateTaskDuration(payload);
+
+            //Update each 5 seconds
+            if( cont % 5 === 0)
+            {
+                this.props.updateTask({ elapsed: payload.elapsed }, payload.id);
+            }
+        }
+        
     }
 
     componentWillReceiveProps(nextProps) {
