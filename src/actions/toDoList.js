@@ -1,5 +1,5 @@
 import { createAction } from "redux-actions";
-import { SET_TO_DO_LIST, SET_TO_DO_INSERTING, SET_ERROR_ON_INSERTING, SET_SELECTED_TASK } from "../constants";
+import { SET_TO_DO_LIST, SET_TO_DO_INSERTING, SET_ERROR_ON_INSERTING, SET_SELECTED_TASK, UPDATE_TASK_DURATION } from "../constants";
 import { apiGet, apiPost, apiDelete, apiPut } from "../api";
 import { URL_TASK } from "../api/urls";
 
@@ -7,6 +7,7 @@ export const setToDoList = createAction(SET_TO_DO_LIST);
 export const setToDoInserting = createAction(SET_TO_DO_INSERTING);
 export const setErrorOnInserting = createAction(SET_ERROR_ON_INSERTING);
 export const setSelectedTask = createAction(SET_SELECTED_TASK);
+export const updateTaskDuration = createAction(UPDATE_TASK_DURATION);
 
 export const fetchToDoList = () => (
     dispatch => (
@@ -31,6 +32,7 @@ export const deleteTask = task => (
         )
     }
 )
+
 
 export const updateTask = (task, taskid) => (
     dispatch => {

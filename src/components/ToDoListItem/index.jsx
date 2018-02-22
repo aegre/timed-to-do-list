@@ -78,7 +78,7 @@ const ToDoListItem = ({ title, description, duration,
                 }
             </div>
             <div className="to-do-list-item-actions">
-            {status === 0 && 
+            {status === 0 && (index !== 0 || !startedTimer)  && 
                 <div className="to-do-list-item-complete">                
                     <span className="hide-on-low">Completar</span>
                     <div className="fas-button" onClick={() => onComplete(_id)}><i className="fas fa-check"></i></div>

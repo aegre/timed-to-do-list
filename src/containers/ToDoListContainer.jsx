@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { withLastLocation } from 'react-router-last-location';
 
-import { fetchToDoList, insertTask, deleteTask, updateTask } from "../actions/toDoList";
+import { fetchToDoList, insertTask, deleteTask, updateTask, updateTaskDuration } from "../actions/toDoList";
 import { getToDoInserting, 
     getErrorOnInserting, 
     getSelectedTask, 
@@ -23,7 +23,10 @@ import { getInitializedTimer } from '../selectors/timer';
 import { startTimer, stopTimer } from '../actions/timer';
 
 class ToDoListContainer extends Component {
-
+    constructor(props){
+        super(props);
+        this.state = { timer: null }
+    }
     componentDidMount = () => {
         if(this.props.onProgressTask.length === 0
         && this.props.completedTasks.length === 0){
@@ -48,10 +51,34 @@ class ToDoListContainer extends Component {
             insertTask({ ...task });
         }
     }
+
+    handleTick = (cont) => {
+        
+        const { updateTaskDuration, onProgressTask } = this.props;
+        console.log(onProgressTask[0]);
+        updateTaskDuration( { id: onProgressTask[0]._id, 
+        elapsed: onProgressTask[0].elapsed + 1 });
+    }
+
     componentWillReceiveProps(nextProps) {
         if(this.props.inserting && !nextProps.inserting && !this.props.errorOnInserting)
         {
             this.goHome();
+        }
+
+        //initialize the timer
+        if(!this.props.initializedTimer && nextProps.initializedTimer)
+        {
+            var cont = 0;
+            const timer = setInterval( () => { cont++;
+                this.handleTick(cont)}, 1000);
+            this.setState({ timer });
+        }
+        //stop the timer
+        else if( this.props.initializedTimer && !nextProps.initializedTimer)
+        {
+            clearInterval(this.state.timer);
+
         }
     }
 
@@ -230,6 +257,7 @@ const mapStateToProps = (state, props) => ({
     initializedTimer: getInitializedTimer(state),
     startTimer: PropTypes.func.isRequired,
     stopTimer: PropTypes.func.isRequired,
+    updateTaskDuration: PropTypes.func.isRequired,
 })
 const mapDispatchToProps = {
     fetchToDoList,
@@ -237,7 +265,8 @@ const mapDispatchToProps = {
     deleteTask, 
     updateTask,
     startTimer,
-    stopTimer
+    stopTimer,
+    updateTaskDuration
 }
 
 export default withLastLocation(withRouter(connect(mapStateToProps,mapDispatchToProps)(ToDoListContainer)));
