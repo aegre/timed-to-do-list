@@ -19,6 +19,8 @@ import { ROUTE_TASK_NEW, ROUTE_HOME } from '../constants/routes';
 import DeletePrompt from '../components/DeletePrompt';
 import { getSelectedFilter } from '../selectors/general';
 import FilterSelector from '../components/FilterSelector';
+import { getInitializedTimer } from '../selectors/timer';
+import { startTimer, stopTimer } from '../actions/timer';
 
 class ToDoListContainer extends Component {
 
@@ -92,6 +94,18 @@ class ToDoListContainer extends Component {
         }
     )
 
+    handlePauseTimer = () => {
+        this.props.stopTimer();
+    }
+
+    handleStartTimer = () => {
+        this.props.startTimer();
+    }
+
+    handleStopTimer = () => {
+        this.props.stopTimer();
+    }
+
     handleFiltterSelection = filter => {
         this.props.history.push(`${ROUTE_HOME}?filter=${filter}`)
     }
@@ -106,7 +120,8 @@ class ToDoListContainer extends Component {
             errorOnInserting,
             inserting,
             completedTasks,
-            selectedFilter
+            selectedFilter,
+            initializedTimer
          } = this.props;
          const onEditionMode = taskId !== undefined;
          const showEditModal = (showEdit === true && !onEditionMode) ||
@@ -133,7 +148,11 @@ class ToDoListContainer extends Component {
                 </div>
                 
                 <ToDoList
+                    onStartTimer={this.handleStartTimer}
+                    onStopTimer={this.handleStopTimer}
+                    onPauseTimer={this.handlePauseTimer}
                     onComplete={this.handleComplete}
+                    startedTimer={initializedTimer}
                     tasks={onProgressTask}
                     />
                 <div className="to-do-list-container-label">
@@ -197,6 +216,7 @@ ToDoListContainer.propTypes = {
     pendingTasks: PropTypes.array.isRequired,
     completedTasks: PropTypes.array.isRequired,
     lastLocation: PropTypes.object,
+    initializedTimer: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = (state, props) => ({
@@ -206,13 +226,18 @@ const mapStateToProps = (state, props) => ({
     errorOnInserting: getErrorOnInserting(state),
     selectedTask: getSelectedTask(state, props),
     selectedFilter: getSelectedFilter(props),
-    onProgressTask: getOnProgressTask(state, props)
+    onProgressTask: getOnProgressTask(state, props),
+    initializedTimer: getInitializedTimer(state),
+    startTimer: PropTypes.func.isRequired,
+    stopTimer: PropTypes.func.isRequired,
 })
 const mapDispatchToProps = {
     fetchToDoList,
     insertTask,
     deleteTask, 
-    updateTask
+    updateTask,
+    startTimer,
+    stopTimer
 }
 
 export default withLastLocation(withRouter(connect(mapStateToProps,mapDispatchToProps)(ToDoListContainer)));

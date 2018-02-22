@@ -9,6 +9,10 @@ export const SET_ERROR_ON_INSERTING = "SET_ERROR_ON_INSERTING";
 
 export const SET_SELECTED_TASK = "SET_SELECTED_TASK";
 
+export const START_TIMER = "START_TIMER";
+
+export const STOP_TIMER = "STOP_TIMER";
+
 //Filters
 
 export const FILTER_SHORT = "short";
