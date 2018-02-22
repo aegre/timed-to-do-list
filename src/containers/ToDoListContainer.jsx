@@ -5,7 +5,12 @@ import { withRouter } from 'react-router-dom';
 import { withLastLocation } from 'react-router-last-location';
 
 import { fetchToDoList, insertTask, deleteTask, updateTask } from "../actions/toDoList";
-import { getToDoInserting, getErrorOnInserting, getSelectedTask, getOnProgressTasks, getCompletedTasks } from '../selectors/task';
+import { getToDoInserting, 
+    getErrorOnInserting, 
+    getSelectedTask, 
+    getCompletedTasks, 
+    getOnProgressTask, 
+    getPendingTasks } from '../selectors/task';
 import ToDoList from '../components/ToDoList';
 import ToDoForm from '../components/ToDoForm';
 
@@ -18,7 +23,7 @@ import FilterSelector from '../components/FilterSelector';
 class ToDoListContainer extends Component {
 
     componentDidMount = () => {
-        if(this.props.onProgressTasks.length === 0
+        if(this.props.onProgressTask.length === 0
         && this.props.completedTasks.length === 0){
         this.props.fetchToDoList();
         }
@@ -92,7 +97,8 @@ class ToDoListContainer extends Component {
     }
     
     render() {
-        const { onProgressTasks, 
+        const { onProgressTask,
+            pendingTasks, 
             showEdit, 
             showDelete, 
             selectedTask, 
@@ -115,7 +121,7 @@ class ToDoListContainer extends Component {
                 </div>
                 <div className="to-do-list-container-label">
                     <div className="section-header">
-                        <h3>Tareas en progreso:</h3>
+                        <h3>En progreso:</h3>
                     </div>
                     
                     <div className="to-do-list-container-actions tooltip">
@@ -128,11 +134,23 @@ class ToDoListContainer extends Component {
                 
                 <ToDoList
                     onComplete={this.handleComplete}
-                    tasks={onProgressTasks}
+                    tasks={onProgressTask}
                     />
                 <div className="to-do-list-container-label">
                     <div className="section-header">
-                        <h3>Tareas completadas:</h3>
+                        <h3>Pendientes:</h3>
+                    </div>
+                </div>
+
+                <ToDoList
+                    onComplete={this.handleComplete}
+                    tasks={pendingTasks}
+                    />
+
+
+                <div className="to-do-list-container-label">
+                    <div className="section-header">
+                        <h3>Completadas:</h3>
                     </div>
                 </div>
                 <ToDoList
@@ -175,18 +193,20 @@ ToDoListContainer.propTypes = {
     insertTask: PropTypes.func.isRequired,
     deleteTask: PropTypes.func.isRequired,
     updateTask: PropTypes.func.isRequired,
-    onProgressTasks: PropTypes.array.isRequired,
+    onProgressTask: PropTypes.array.isRequired,
+    pendingTasks: PropTypes.array.isRequired,
     completedTasks: PropTypes.array.isRequired,
     lastLocation: PropTypes.object,
 };
 
 const mapStateToProps = (state, props) => ({
-    onProgressTasks: getOnProgressTasks(state, props),
+    pendingTasks: getPendingTasks(state, props),
     completedTasks: getCompletedTasks(state),
     inserting: getToDoInserting(state),
     errorOnInserting: getErrorOnInserting(state),
     selectedTask: getSelectedTask(state, props),
-    selectedFilter: getSelectedFilter(props)
+    selectedFilter: getSelectedFilter(props),
+    onProgressTask: getOnProgressTask(state, props)
 })
 const mapDispatchToProps = {
     fetchToDoList,
