@@ -32,6 +32,8 @@ class ToDoListContainer extends Component {
         && this.props.completedTasks.length === 0){
         this.props.fetchToDoList();
         }
+        //initialized the timer stopped
+        this.props.stopTimer();
     }
 
     handleSubmit = values => {
@@ -55,30 +57,25 @@ class ToDoListContainer extends Component {
     handleTick = (cont) => {
         
         const { updateTaskDuration, onProgressTask } = this.props;
-        console.log(onProgressTask[0]);
-        updateTaskDuration( { id: onProgressTask[0]._id, 
-        elapsed: onProgressTask[0].elapsed + 1 });
+        
+        //create the action pay load
+        const payload= { id: onProgressTask[0]._id, 
+            elapsed: onProgressTask[0].elapsed + 1 };
+
+        //Call the action
+        updateTaskDuration(payload);
+
+        //Update each 5 seconds
+        if( cont % 5 === 0)
+        {
+            this.props.updateTask({ elapsed: payload.elapsed }, payload.id);
+        }
     }
 
     componentWillReceiveProps(nextProps) {
         if(this.props.inserting && !nextProps.inserting && !this.props.errorOnInserting)
         {
             this.goHome();
-        }
-
-        //initialize the timer
-        if(!this.props.initializedTimer && nextProps.initializedTimer)
-        {
-            var cont = 0;
-            const timer = setInterval( () => { cont++;
-                this.handleTick(cont)}, 1000);
-            this.setState({ timer });
-        }
-        //stop the timer
-        else if( this.props.initializedTimer && !nextProps.initializedTimer)
-        {
-            clearInterval(this.state.timer);
-
         }
     }
 
@@ -108,6 +105,13 @@ class ToDoListContainer extends Component {
         }
     }
 
+    componentWillUnmount = () => {
+        if(this.props.initializedTimer){
+            this.handlePauseTimer();
+        }
+
+    }
+
     handleOnDeleteConfirmation = () => {
         this.props.deleteTask(this.props.selectedTask);
         this.goHome();
@@ -122,15 +126,42 @@ class ToDoListContainer extends Component {
     )
 
     handlePauseTimer = () => {
+        //Stop the timer in the state
         this.props.stopTimer();
+        //stop timer in the component
+        this.stopTimer();
+
+        const { elapsed, _id} = this.props.onProgressTask[0];
+        //Save changes
+        this.props.updateTask({ elapsed }, _id);
+    }
+
+    startTimer = () => {
+        var cont = 0;
+        const timer = setInterval( () => { cont++;
+        this.handleTick(cont)}, 1000);
+        this.setState({ timer });
+    }
+
+    stopTimer = () => {
+        //Remove timer
+        clearInterval(this.state.timer);
     }
 
     handleStartTimer = () => {
+        //start timer in the state
         this.props.startTimer();
+        //start timer in the component
+        this.startTimer();
     }
 
     handleStopTimer = () => {
         this.props.stopTimer();
+        //stop timer in the component
+        this.stopTimer();
+        const { _id} = this.props.onProgressTask[0];
+        //Save changes
+        this.props.updateTask({ elapsed: 0 }, _id);
     }
 
     handleFiltterSelection = filter => {
