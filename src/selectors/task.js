@@ -18,6 +18,7 @@ export const getOnProgressTask = createSelector(
 export const getCompletedTasks = createSelector(
     state => getTasks(state), tasks => tasks.filter( task => task.status === 1)
 )
+
 export const getToDoInserting = createSelector(
     state => state.task.inserting, inserting => inserting
 )
@@ -29,3 +30,4 @@ export const getErrorOnInserting = createSelector(
 export const getSelectedTask = createSelector(
     (state,props) => state.task.tasks.find( t=> t._id === props.taskId) , task => task
 )
+

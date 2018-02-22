@@ -11,3 +11,7 @@ dateFormat.i18n = {
 export const formatDate = date => (
     dateFormat(date, "dd mmmm yyyy hh:MM TT.")
 )
+
+export const formatDateSimple = date => (
+    dateFormat(date, "dd-mm-yyyy")
+)
