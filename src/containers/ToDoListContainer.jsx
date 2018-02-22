@@ -36,6 +36,7 @@ class ToDoListContainer extends Component {
         this.props.stopTimer();
     }
 
+    //handle update form
     handleSubmit = values => {
         //convert minutes to seconds before save
         const task = { ...values };
@@ -45,7 +46,7 @@ class ToDoListContainer extends Component {
         //Update task
         if( taskId !== undefined && selectedTask )
         {
-            updateTask({ ...task }, taskId);
+            updateTask({ ...task }, taskId, true);
         }
         //Insert a new one
         else
@@ -54,6 +55,7 @@ class ToDoListContainer extends Component {
         }
     }
 
+    //timer tick
     handleTick = (cont) => {
         
         const { updateTaskDuration, onProgressTask } = this.props;
@@ -63,23 +65,23 @@ class ToDoListContainer extends Component {
         const payload= { id: task._id, 
             elapsed: task.elapsed + 1 };
         
-        //Finish the task
+        //Finish the task and reload list
         if(payload.elapsed >= task.duration)
         {
             this.handlePauseTimer();
             this.props.updateTask(
-                { elapsed: payload.elapsed, status: 1 }, payload.id)
+                { elapsed: payload.elapsed, status: 1 }, payload.id, true)
         }
-        //Update the elapsed time
+        //Update the elapsed time and do not reload the list
         else
         {            
             //Call the action
             updateTaskDuration(payload);
 
-            //Update each 5 seconds
+            //Update each 5 seconds without reloading
             if( cont % 5 === 0)
             {
-                this.props.updateTask({ elapsed: payload.elapsed }, payload.id);
+                this.props.updateTask({ elapsed: payload.elapsed }, payload.id,false);
             }
         }
         
@@ -103,9 +105,10 @@ class ToDoListContainer extends Component {
         }
     }
     
+    //handle complete task click
     handleComplete = taskId => {
         //Send the update task method with status value = 1 (completed)
-        this.props.updateTask({ status: 1}, taskId);
+        this.props.updateTask({ status: 1}, taskId, true);
     }
 
     goHome = () => {
@@ -146,7 +149,7 @@ class ToDoListContainer extends Component {
 
         const { elapsed, _id} = this.props.onProgressTask[0];
         //Save changes
-        this.props.updateTask({ elapsed }, _id);
+        this.props.updateTask({ elapsed }, _id, false);
     }
 
     startTimer = () => {
@@ -172,9 +175,10 @@ class ToDoListContainer extends Component {
         this.props.stopTimer();
         //stop timer in the component
         this.stopTimer();
-        const { _id} = this.props.onProgressTask[0];
+        const { _id } = this.props.onProgressTask[0];
         //Save changes
-        this.props.updateTask({ elapsed: 0 }, _id);
+        this.props.updateTaskDuration({ id: _id, elapsed: 0})
+        this.props.updateTask({ elapsed: 0 }, _id, false);
     }
 
     handleFiltterSelection = filter => {

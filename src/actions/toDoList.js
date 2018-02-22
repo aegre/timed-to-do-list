@@ -34,7 +34,7 @@ export const deleteTask = task => (
 )
 
 
-export const updateTask = (task, taskid) => (
+export const updateTask = (task, taskid, reload) => (
     dispatch => {
         dispatch(setToDoInserting(true));
         dispatch(setErrorOnInserting(false));
@@ -44,7 +44,9 @@ export const updateTask = (task, taskid) => (
                 {
                     dispatch(setErrorOnInserting(false));
                     //reload the collection
-                    dispatch(fetchToDoList());
+                    if(reload){ 
+                        dispatch(fetchToDoList());
+                    }
                     dispatch(setToDoInserting(false));
                 }
                 else {
