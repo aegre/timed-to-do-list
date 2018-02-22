@@ -288,6 +288,9 @@ ToDoListContainer.propTypes = {
     completedTasks: PropTypes.array.isRequired,
     lastLocation: PropTypes.object,
     initializedTimer: PropTypes.bool.isRequired,
+    startTimer: PropTypes.func.isRequired,
+    stopTimer: PropTypes.func.isRequired,
+    updateTaskDuration: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state, props) => ({
@@ -299,9 +302,6 @@ const mapStateToProps = (state, props) => ({
     selectedFilter: getSelectedFilter(props),
     onProgressTask: getOnProgressTask(state, props),
     initializedTimer: getInitializedTimer(state),
-    startTimer: PropTypes.func.isRequired,
-    stopTimer: PropTypes.func.isRequired,
-    updateTaskDuration: PropTypes.func.isRequired,
 })
 const mapDispatchToProps = {
     fetchToDoList,
