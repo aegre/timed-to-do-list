@@ -117,14 +117,10 @@ class ToDoListContainer extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        const { lastLocation, errorOnInserting, inserting } = this.props;
-        if(inserting && !nextProps.inserting && errorOnInserting)
+        const { errorOnInserting, inserting } = this.props;
+        if(inserting && !nextProps.inserting && !errorOnInserting)
         {
-            //If does not come from home // comes from edit o new, change route
-            if(lastLocation.pathname !== ROUTE_HOME)
-            {
-                this.goHome();
-            }
+            this.goHome();
         }
     }
 
