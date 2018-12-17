@@ -1,3 +1,3 @@
-const baseUrl = 'http://localhost:1234/api/'
+const baseUrl = process.env.API_URL
 
 export const URL_TASK = `${baseUrl}task`

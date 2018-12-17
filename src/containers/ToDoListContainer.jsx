@@ -232,8 +232,7 @@ class ToDoListContainer extends Component {
          const showEditModal = (showEdit === true && !onEditionMode) ||
          ( onEditionMode && selectedTask && showEdit);
         return (
-            
-            <div>
+            <>
                 <div className="to-do-list-container-filter">
                     <FilterSelector
                     selectedFilter={selectedFilter}
@@ -304,8 +303,7 @@ class ToDoListContainer extends Component {
                     />    
                 }
                 
-                
-            </div>
+            </>
         );
     }
 }
