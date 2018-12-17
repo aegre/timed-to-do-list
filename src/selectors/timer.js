@@ -1,5 +1,5 @@
-import { createSelector } from "reselect";
+import { createSelector } from 'reselect'
 
 export const getInitializedTimer = createSelector(
-    state => state.timer.initialized, initialized => initialized
+  state => state.timer.initialized, initialized => initialized
 )

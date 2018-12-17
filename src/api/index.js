@@ -1,12 +1,12 @@
-var axios = require('axios');
+var axios = require('axios')
 
-//API requests, all of them return a promise that 
-//redux-promise will handle
+// API requests, all of them return a promise that
+// redux-promise will handle
 
-export const apiGet = (url, config) => axios.get(url, config);
+export const apiGet = (url, config) => axios.get(url, config)
 
-export const apiPut = (url, obj, config) => axios.put(url,obj, config);
+export const apiPut = (url, obj, config) => axios.put(url, obj, config)
 
-export const apiPost = (url, obj, config) => axios.post(url, obj, config);
+export const apiPost = (url, obj, config) => axios.post(url, obj, config)
 
-export const apiDelete = (url, params, config) => axios.delete(url, params, config);
+export const apiDelete = (url, params, config) => axios.delete(url, params, config)
