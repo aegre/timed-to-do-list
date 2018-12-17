@@ -3,29 +3,36 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "axios": "^0.17.1",
-    "dateformat": "^3.0.3",
-    "i": "^0.3.6",
-    "npm": "^5.6.0",
-    "query-string": "^5.1.0",
-    "react": "^16.2.0",
-    "react-dom": "^16.2.0",
-    "react-redux": "^5.0.7",
-    "react-router": "^4.2.0",
-    "react-router-dom": "^4.2.2",
-    "react-router-last-location": "^1.1.0",
-    "react-scripts": "1.1.1",
-    "recharts": "^1.0.0-beta.10",
-    "redux": "^3.7.2",
-    "redux-actions": "^2.2.1",
-    "redux-form": "^7.2.3",
-    "redux-thunk": "^2.2.0",
-    "reselect": "^3.0.1"
+    "axios": "0.18.0",
+    "dateformat": "3.0.3",
+    "query-string": "6.2.0",
+    "react": "16.6.3",
+    "react-dom": "16.6.3",
+    "react-redux": "6.0.0",
+    "react-router": "4.3.1",
+    "react-router-dom": "4.3.1",
+    "react-router-last-location": "1.1.0",
+    "recharts": "1.4.1",
+    "redux": "4.0.1",
+    "redux-actions": "2.6.4",
+    "redux-form": "8.0.4",
+    "redux-thunk": "2.3.0",
+    "reselect": "4.0.0"
+  },
+  "devDependencies": {
+    "babel-eslint": "10.0.1",
+    "react-scripts": "2.1.1"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
-  }
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
 }
