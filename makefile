@@ -16,7 +16,7 @@ build: ## Genera el bundle de webpack de producción
 lint: ## Correr el linter
 	npm run lint
 
-lint: ## Correr el linter en modo auto-arreglo
+lint-fix: ## Correr el linter en modo auto-arreglo
 	npm run lint --fix
 
 clean: ## Borrar carpeta node_modules y los hooks de git

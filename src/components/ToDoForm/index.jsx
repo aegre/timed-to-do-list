@@ -5,21 +5,34 @@ import './styles.css'
 import ModalWindow from '../ModalWindow'
 import { renderLoading } from '../../helpers/renderLoading'
 
-const formField = ({ input, meta, type, label, name, placeholder
-  , min, max }) => (
+const formField = (
+  {
+    input, meta, type, label, name, placeholder
+    , min, max
+  }) =>
+  (
     <div className='row'>
-    <div>
-        <label htmlFor={name}>{label} :</label>
+      <div>
+        <label htmlFor={name}>
+          {`${label} :`}
+        </label>
       </div>
-    <div>
-        {type === 'textarea' ? <textarea {...input} placeholder={placeholder} />
-        : <input min={min} max={max} {...input} placeholder={placeholder} type={type || 'text'} />
-      }</div>
-    <div>
-        { meta.touched && meta.error && <span className='validation-error'> {meta.error} </span>}
+      {
+        type === 'textarea'
+          ? <textarea {...input} placeholder={placeholder} />
+          : <input min={min} max={max} {...input} placeholder={placeholder} type={type || 'text'} />
+      }
+
+      <div>
+        {
+          meta.touched && meta.error &&
+            <span className='validation-error'>
+              {meta.error}
+            </span>
+        }
       </div>
-  </div>
-)
+    </div>
+  )
 
 const ToDoForm = ({
   onCloseModal,
@@ -40,9 +53,12 @@ const ToDoForm = ({
             <Field name='title' separationType='row' component={formField} type='text' label='Nombre*' />
             <Field name='description' separationType='row' component={formField} type='textarea' label='Descripción' />
             <Field name='duration' min='0' max='120' component={formField} type='number' label='Duración (minutos max 120) *' />
-            <Field name='duration' component='input' type='radio' value='15' />15 mn
-            <Field name='duration' component='input' type='radio' value='30' />30 mn
-            <Field name='duration' component='input' type='radio' value='60' />60 mn
+            <Field name='duration' component='input' type='radio' value='15' />
+              15 mn
+            <Field name='duration' component='input' type='radio' value='30' />
+              30 mn
+            <Field name='duration' component='input' type='radio' value='60' />
+              60 mn
             <div className='row'>
               <button onClick={onCloseModal} type='button' disabled={inserting} >Cancelar</button>
               <button className='button-action' type='submit' disabled={inserting} >Guardar</button>

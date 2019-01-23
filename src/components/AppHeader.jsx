@@ -1,11 +1,13 @@
+// Libraries
 import React from 'react'
 import { Link } from 'react-router-dom'
 
+// Components
 import logo from '../Logo.png'
-import { ROUTE_STADISTICS, ROUTE_HOME } from '../constants/routes'
+import { ROUTE_STADISTICS, ROUTE_HOME } from 'constants/routes'
 
-const AppHeader = () => {
-  return (
+const AppHeader = () =>
+  (
     <div>
       <nav>
         <div id='main-logo'>
@@ -24,6 +26,5 @@ const AppHeader = () => {
       </nav>
     </div>
   )
-}
 
 export default AppHeader

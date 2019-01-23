@@ -85,7 +85,7 @@
         ]
       }
     }],
-    "react/jsx-filename-extension": ["error", { "extensions": [".jsx"] }],
+    "react/jsx-filename-extension": ["error", { "extensions": [".jsx", ".test.js"] }],
     "react/jsx-no-comment-textnodes": "error",
     "react/no-array-index-key": "error",
     "react/require-default-props": ["error", {
