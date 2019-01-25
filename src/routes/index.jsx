@@ -28,8 +28,8 @@ const Routes = () => {
         />
         <Route
           path={ROUTE_TASK_NEW}
-          render={
-            <ToDoListContainer showEdit />
+          render={props =>
+            <ToDoListContainer {...props} showEdit />
           }
         />
         <Route
