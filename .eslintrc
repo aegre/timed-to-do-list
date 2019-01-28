@@ -11,6 +11,7 @@
     "plugin:jsx-a11y/recommended"
   ],
   "rules": {
+    "no-console": ["error", { "allow": ["warn", "error"] }],
     "react/prop-types": 1,
     "react/no-unused-prop-types": 1,
     "react/jsx-closing-tag-location": "error",

@@ -1,8 +1,10 @@
 // Libraries
 import React, { Component } from 'react'
-import API from 'api'
+import PropTypes from 'prop-types'
 
 // Components
+import API from 'api'
+import { getPendingTasks, getOnProgressTask, getCompletedTasks } from 'selectors/task'
 
 const TasksContext = React.createContext({})
 
@@ -30,7 +32,7 @@ class TasksProvider extends Component {
     } catch (error) {
       console.error(error)
       this.setState({
-        tasks: undefined,
+        tasks: [],
         isLoading: false
       })
     }
@@ -39,10 +41,16 @@ class TasksProvider extends Component {
   render () {
     const { children } = this.props
     const { tasks, isLoading } = this.state
+
+    const [onProgressTask, ...pendingTasks] = getOnProgressTask(tasks)
+
     return (
       <TasksContext.Provider value={{
         fetchTasks: this.fetchTasks,
         tasks,
+        pendingTasks,
+        onProgressTask,
+        completedTasks: getCompletedTasks(tasks),
         isLoading
       }}
       >
@@ -51,6 +59,11 @@ class TasksProvider extends Component {
     )
   }
 }
+
+TasksProvider.propTypes = {
+  children: PropTypes.number.isRequired
+}
+
 const TasksConsumer = TasksContext.Consumer
 
 export { TasksConsumer, TasksProvider }
