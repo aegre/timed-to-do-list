@@ -1,115 +1,103 @@
-import React from 'react'
+// Components
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { reduxForm, Field } from 'redux-form'
-import './styles.css'
-import ModalWindow from '../ModalWindow'
+import { withRouter } from 'react-router-dom'
+
+// Components
 import { renderLoading } from '../../helpers/renderLoading'
+import ModalWindow from '../ModalWindow'
+import { EDIT_MODE, NEW_MODE } from './constants'
 
-const formField = (
-  {
-    input, meta, type, label, name, placeholder
-    , min, max
-  }) =>
-  (
-    <div className='row'>
-      <div>
-        <label htmlFor={name}>
-          {`${label} :`}
-        </label>
-      </div>
-      {
-        type === 'textarea'
-          ? <textarea {...input} placeholder={placeholder} />
-          : <input min={min} max={max} {...input} placeholder={placeholder} type={type || 'text'} />
+// Styles
+import './styles.css'
+import { ROUTE_HOME } from 'constants/routes'
+import Form from './Form'
+import API from 'api'
+import withTasksData from 'contexts/withTasksData'
+
+class TaskForm extends Component {
+  state = {
+    isLoading: false,
+    hasError: false
+  }
+
+  handleSubmit = (values) => {
+    const { mode, taskId } = this.props
+
+    this.setState({ isLoading: true })
+
+    const newTask = {
+      ...values,
+      duration: values.duration * 60
+    }
+
+    try {
+      if (mode === EDIT_MODE) {
+        this.updateTask(newTask)
+      } else {
+        this.createTask(newTask)
       }
+      this.setState({
+        isLoading: false,
+        hasError: false
+      }, this.closeModal)
+    } catch (error) {
+      console.error(error)
+      this.setState({
+        hasError: true,
+        isLoading: false
+      })
+    }
+  }
 
-      <div>
-        {
-          meta.touched && meta.error &&
-            <span className='validation-error'>
-              {meta.error}
-            </span>
-        }
-      </div>
-    </div>
-  )
+  createTask = async (task) => {
+    const { addTask } = this.props
+    const { data: createdTask } = await API.Tasks.Create(task)
+    addTask(createdTask)
+  }
 
-const ToDoForm = ({
-  onCloseModal,
-  handleSubmit,
-  inserting,
-  errorOnInserting,
-  show,
-  task,
-  editionMode,
-  initialValues
-}) => {
-  return (
-    <ModalWindow show={show} onClickOutside={onCloseModal}>
-      <div className='to-do-form-container'>
-        <div className='to-do-form'>
-          <h2>{editionMode ? 'Editar tarea' : 'Nueva tarea'}</h2>
-          <form onSubmit={handleSubmit}>
-            <Field name='title' separationType='row' component={formField} type='text' label='Nombre*' />
-            <Field name='description' separationType='row' component={formField} type='textarea' label='Descripción' />
-            <Field name='duration' min='0' max='120' component={formField} type='number' label='Duración (minutos max 120) *' />
-            <Field name='duration' component='input' type='radio' value='15' />
-              15 mn
-            <Field name='duration' component='input' type='radio' value='30' />
-              30 mn
-            <Field name='duration' component='input' type='radio' value='60' />
-              60 mn
-            <div className='row'>
-              <button onClick={onCloseModal} type='button' disabled={inserting} >Cancelar</button>
-              <button className='button-action' type='submit' disabled={inserting} >Guardar</button>
-            </div>
-            { errorOnInserting &&
-            <div className=' validation-error row'>
-              <span>Ocurrió un error, por favor intente de nuevo.</span>
-            </div>}
+  updateTask = async (task) => {
+    const response = await API.Tasks.Update('', task)
+    console.log(response)
+  }
 
-            { inserting &&
-            <div className='row'>
-              {renderLoading('s')}
-            </div>
-            }
-          </form>
+  closeModal = () => {
+    const { history } = this.props
+    history.push(ROUTE_HOME)
+  }
+
+  render () {
+    const {
+      isLoading,
+      hasError
+    } = this.state
+
+    const {
+      mode
+    } = this.props
+    return (
+      <ModalWindow show onClickOutside={this.closeModal}>
+        <div className='to-do-form-container'>
+          <div className='to-do-form'>
+            <h2>{mode === EDIT_MODE ? 'Editar tarea' : 'Nueva tarea'}</h2>
+            <Form closeModal={this.closeModal} onSubmit={this.handleSubmit} hasError={hasError} isLoading={isLoading} />
+          </div>
         </div>
-      </div>
-    </ModalWindow>
-  )
-}
-
-ToDoForm.propTypes = {
-  onCloseModal: PropTypes.func.isRequired,
-  handleSubmit: PropTypes.func.isRequired,
-  inserting: PropTypes.bool.isRequired,
-  errorOnInserting: PropTypes.bool.isRequired,
-  show: PropTypes.bool,
-  task: PropTypes.object,
-  editionMode: PropTypes.bool
-}
-
-// validate fields
-const validate = values => {
-  const error = {}
-  if (!values.title) {
-    error.title = 'Campo requerido'
+      </ModalWindow>
+    )
   }
-  if (!values.duration) {
-    error.duration = 'Campo requerido'
-  } else if (values.duration < 1 || values.duration > 120) {
-    error.duration = 'La duración debe tener un rango entre 1 y 120'
-  }
-  return error
 }
 
-// redux form decoration
-const connectedToDoForm = reduxForm(
-  {
-    form: 'taskForm',
-    validate,
-    enableReinitialize: true
-  })(ToDoForm)
+TaskForm.defaultProps = {
+  mode: NEW_MODE,
+  taskId: ''
+}
 
-export default connectedToDoForm
+TaskForm.propTypes = {
+  mode: PropTypes.oneOf([NEW_MODE, EDIT_MODE]),
+  taskId: PropTypes.string,
+  addTask: PropTypes.func.isRequired
+}
+
+export default withRouter(withTasksData(TaskForm))

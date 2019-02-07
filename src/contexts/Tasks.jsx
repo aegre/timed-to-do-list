@@ -38,6 +38,14 @@ class TasksProvider extends Component {
     }
   }
 
+  addTask = task => {
+    this.setState(({
+      tasks
+    }) => ({
+      tasks: [...tasks, task]
+    }))
+  }
+
   render () {
     const { children } = this.props
     const { tasks, isLoading } = this.state
@@ -51,7 +59,8 @@ class TasksProvider extends Component {
         pendingTasks,
         onProgressTask,
         completedTasks: getCompletedTasks(tasks),
-        isLoading
+        isLoading,
+        addTask: this.addTask
       }}
       >
         {children}

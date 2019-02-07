@@ -23,12 +23,12 @@ class Tasks {
     return apiDelete('task')
   }
 
-  static Update () {
-    return apiPut('task')
+  static Update (id, task) {
+    return apiPut(`task${id}`, task)
   }
 
-  static Create () {
-    return apiPost('task')
+  static Create (task) {
+    return apiPost('task', task)
   }
 }
 

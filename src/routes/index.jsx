@@ -32,14 +32,14 @@ class Routes extends Component {
           <Route
             path={ROUTE_TASK_NEW}
             render={props =>
-              <ToDoListContainer {...props} {...this.props} showEdit />
+              <ToDoListContainer {...props} {...this.props} showModal />
             }
           />
           <Route
             path={ROUTE_TASK_EDIT}
             render={props =>
               <ToDoListContainer
-                showEdit
+                showModal
                 {...props}
                 {...this.props}
                 taskId={props.match.params.id}

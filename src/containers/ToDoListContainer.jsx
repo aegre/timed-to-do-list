@@ -1,20 +1,13 @@
+// Libraries
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import { withRouter } from 'react-router-dom'
+import { withRouter, Link } from 'react-router-dom'
 import { withLastLocation } from 'react-router-last-location'
 
-import { fetchToDoList, insertTask, deleteTask, updateTask, updateTaskDuration } from '../actions/toDoList'
-import { getToDoInserting,
-  getErrorOnInserting,
-  getSelectedTask,
-  getCompletedTasks,
-  getOnProgressTask,
-  getPendingTasks } from 'selectors/task'
+// Components
 import ToDoList from 'components/ToDoList'
 import ToDoForm from 'components/ToDoForm'
-
-import './styles.css'
 import { ROUTE_TASK_NEW, ROUTE_HOME } from 'constants/routes'
 import DeletePrompt from 'components/DeletePrompt'
 import { getSelectedFilter } from 'selectors/general'
@@ -22,28 +15,25 @@ import FilterSelector from 'components/FilterSelector'
 import { getInitializedTimer } from 'selectors/timer'
 import { startTimer, stopTimer } from 'actions/timer'
 
+// Actions
+import { fetchToDoList, insertTask, deleteTask, updateTask, updateTaskDuration } from '../actions/toDoList'
+import { getToDoInserting,
+  getErrorOnInserting,
+  getSelectedTask,
+  getCompletedTasks,
+  getOnProgressTask,
+  getPendingTasks } from 'selectors/task'
+
+// styles
+import './styles.css'
+
 class ToDoListContainer extends Component {
   constructor (props) {
     super(props)
     this.state = { timer: null }
   }
 
-    // handle update form
-    handleSubmit = values => {
-      // convert minutes to seconds before save
-      const task = { ...values }
-      task.duration *= 60
-
-      const { taskId, selectedTask, insertTask, updateTask } = this.props
-      // Update task
-      if (taskId !== undefined && selectedTask) {
-        updateTask({ ...task }, taskId, true)
-      }
-      // Insert a new one
-      else {
-        insertTask({ ...task })
-      }
-    }
+  // handle update form
 
     // Handle drop for progress task
     handleDropInProgress = taskId => {
@@ -100,14 +90,6 @@ class ToDoListContainer extends Component {
       const { errorOnInserting, inserting } = this.props
       if (inserting && !nextProps.inserting && !errorOnInserting) {
         this.goHome()
-      }
-    }
-
-    handleAddButton = () => {
-      if (this.props.showEdit) {
-        this.goHome()
-      } else {
-        this.props.history.push(ROUTE_TASK_NEW)
       }
     }
 
@@ -194,7 +176,7 @@ class ToDoListContainer extends Component {
     render () {
       const { onProgressTask,
         pendingTasks,
-        showEdit,
+        showModal,
         showDelete,
         selectedTask,
         taskId,
@@ -205,8 +187,8 @@ class ToDoListContainer extends Component {
         initializedTimer
       } = this.props
       const onEditionMode = taskId !== undefined
-      const showEditModal = (showEdit === true && !onEditionMode) ||
-         (onEditionMode && selectedTask && showEdit)
+      const showModalModal = (showModal && !onEditionMode) ||
+         (onEditionMode && selectedTask && showModal)
       return (
             <>
               <div className='to-do-list-container-filter'>
@@ -222,9 +204,9 @@ class ToDoListContainer extends Component {
 
                 <div className='to-do-list-container-actions tooltip'>
                   <span className='tooltiptext'>Nueva</span>
-                  <button className='fas-button' onClick={this.handleAddButton}>
+                  <Link className='fas-button' to={ROUTE_TASK_NEW}>
                     <i className='fas fa-plus' />
-                  </button>
+                  </Link >
                 </div>
               </div>
 
@@ -266,7 +248,7 @@ class ToDoListContainer extends Component {
                 onDeleteConfirmation={this.handleOnDeleteConfirmation}
               />
               {
-                showEditModal &&
+                showModalModal &&
                 <ToDoForm
                   editionMode={onEditionMode}
                   onCloseModal={this.goHome}
@@ -275,7 +257,7 @@ class ToDoListContainer extends Component {
                   errorOnInserting={errorOnInserting}
                   task={selectedTask}
                   initialValues={selectedTask && this.getInitialValues(selectedTask)}
-                  show={showEditModal}
+                  show={showModalModal}
                 />
               }
 
@@ -296,7 +278,7 @@ const TaskPropTypes = PropTypes.shape({
 
 ToDoListContainer.propTypes = {
   fetchToDoList: PropTypes.func.isRequired,
-  showEdit: PropTypes.bool,
+  showModal: PropTypes.bool,
   showDelete: PropTypes.bool,
   inserting: PropTypes.bool.isRequired,
   errorOnInserting: PropTypes.bool.isRequired,
@@ -313,19 +295,6 @@ ToDoListContainer.propTypes = {
   stopTimer: PropTypes.func.isRequired,
   updateTaskDuration: PropTypes.func.isRequired
 }
-
-/*
-const mapStateToProps = (state, props) => ({
-  pendingTasks: getPendingTasks(state, props),
-  completedTasks: getCompletedTasks(state),
-  inserting: getToDoInserting(state),
-  errorOnInserting: getErrorOnInserting(state),
-  selectedTask: getSelectedTask(state, props),
-  selectedFilter: getSelectedFilter(props),
-  onProgressTask: getOnProgressTask(state, props),
-  initializedTimer: getInitializedTimer(state)
-})
-*/
 
 const mapDispatchToProps = {
   fetchToDoList,
