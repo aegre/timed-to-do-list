@@ -6,7 +6,8 @@ import { LastLocationProvider } from 'react-router-last-location'
 // Components
 import AppHeader from 'components/AppHeader'
 import Routes from 'routes'
-import { TasksProvider } from 'contexts/Tasks'
+import { TasksProvider, TasksConsumer } from 'contexts/Tasks'
+import Loading from 'components/Loading'
 
 class App extends Component {
   render () {
@@ -17,7 +18,14 @@ class App extends Component {
             <AppHeader />
             <div className='content'>
               <TasksProvider>
-                <Routes />
+                <TasksConsumer>
+                  {
+                    ({ isLoading }) =>
+                      isLoading
+                        ? <Loading />
+                        : <Routes />
+                  }
+                </TasksConsumer>
               </TasksProvider>
             </div>
           </div>
