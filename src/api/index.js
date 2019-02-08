@@ -24,7 +24,7 @@ class Tasks {
   }
 
   static Update (id, task) {
-    return apiPut(`task${id}`, task)
+    return apiPut(`task/${id}`, task)
   }
 
   static Create (task) {

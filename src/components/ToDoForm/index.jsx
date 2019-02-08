@@ -1,11 +1,9 @@
 // Components
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { reduxForm, Field } from 'redux-form'
 import { withRouter } from 'react-router-dom'
 
 // Components
-import { renderLoading } from '../../helpers/renderLoading'
 import ModalWindow from '../ModalWindow'
 import { EDIT_MODE, NEW_MODE } from './constants'
 
@@ -15,6 +13,7 @@ import { ROUTE_HOME } from 'constants/routes'
 import Form from './Form'
 import API from 'api'
 import withTasksData from 'contexts/withTasksData'
+import { getForminitialValues } from './utils'
 
 class TaskForm extends Component {
   state = {
@@ -23,7 +22,7 @@ class TaskForm extends Component {
   }
 
   handleSubmit = (values) => {
-    const { mode, taskId } = this.props
+    const { mode } = this.props
 
     this.setState({ isLoading: true })
 
@@ -31,7 +30,6 @@ class TaskForm extends Component {
       ...values,
       duration: values.duration * 60
     }
-
     try {
       if (mode === EDIT_MODE) {
         this.updateTask(newTask)
@@ -58,8 +56,9 @@ class TaskForm extends Component {
   }
 
   updateTask = async (task) => {
-    const response = await API.Tasks.Update('', task)
-    console.log(response)
+    const { taskId, updateTask } = this.props
+    const { data: updatedTask } = await API.Tasks.Update(taskId, task)
+    updateTask(updatedTask)
   }
 
   closeModal = () => {
@@ -73,15 +72,24 @@ class TaskForm extends Component {
       hasError
     } = this.state
 
-    const {
-      mode
-    } = this.props
+    const { mode, task } = this.props
+
     return (
       <ModalWindow show onClickOutside={this.closeModal}>
         <div className='to-do-form-container'>
           <div className='to-do-form'>
             <h2>{mode === EDIT_MODE ? 'Editar tarea' : 'Nueva tarea'}</h2>
-            <Form closeModal={this.closeModal} onSubmit={this.handleSubmit} hasError={hasError} isLoading={isLoading} />
+            <Form
+              initialValues={
+                task
+                  ? getForminitialValues(task)
+                  : {}
+              }
+              closeModal={this.closeModal}
+              onSubmit={this.handleSubmit}
+              hasError={hasError}
+              isLoading={isLoading}
+            />
           </div>
         </div>
       </ModalWindow>
@@ -97,7 +105,14 @@ TaskForm.defaultProps = {
 TaskForm.propTypes = {
   mode: PropTypes.oneOf([NEW_MODE, EDIT_MODE]),
   taskId: PropTypes.string,
-  addTask: PropTypes.func.isRequired
+  addTask: PropTypes.func.isRequired,
+  updateTask: PropTypes.func.isRequired,
+  task: PropTypes.shape({
+    _id: PropTypes.string.isRequired
+  }).isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired
+  }).isRequired
 }
 
 export default withRouter(withTasksData(TaskForm))

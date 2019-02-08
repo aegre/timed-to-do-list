@@ -16,7 +16,7 @@ import { getInitializedTimer } from 'selectors/timer'
 import { startTimer, stopTimer } from 'actions/timer'
 
 // Actions
-import { fetchToDoList, insertTask, deleteTask, updateTask, updateTaskDuration } from '../actions/toDoList'
+import { fetchToDoList, insertTask, deleteTask, updateTask, updateTaskDuration } from 'actions/toDoList'
 import { getToDoInserting,
   getErrorOnInserting,
   getSelectedTask,
@@ -26,6 +26,7 @@ import { getToDoInserting,
 
 // styles
 import './styles.css'
+import { EDIT_MODE, NEW_MODE } from 'components/ToDoForm/constants'
 
 class ToDoListContainer extends Component {
   constructor (props) {
@@ -33,6 +34,23 @@ class ToDoListContainer extends Component {
     this.state = { timer: null }
   }
 
+  componentDidMount () {
+    this.changeSelectedTask()
+  }
+
+  componentDidUpdate (prevProps) {
+    const { taskId } = this.props
+
+    if (prevProps.taskId !== taskId) {
+      this.changeSelectedTask()
+    }
+  }
+
+  changeSelectedTask = () => {
+    const { taskId, tasks } = this.props
+    const selectedTask = tasks.find(({ _id }) => _id === taskId)
+    this.setState({ selectedTask })
+  }
   // handle update form
 
     // Handle drop for progress task
@@ -119,14 +137,6 @@ class ToDoListContainer extends Component {
       this.goHome()
     }
 
-    getInitialValues = selectedTask => (
-      {
-        title: selectedTask.title,
-        duration: selectedTask.duration / 60,
-        description: selectedTask.description
-      }
-    )
-
     handlePauseTimer = () => {
       // Stop the timer in the state
       this.props.stopTimer()
@@ -178,7 +188,6 @@ class ToDoListContainer extends Component {
         pendingTasks,
         showModal,
         showDelete,
-        selectedTask,
         taskId,
         errorOnInserting,
         inserting,
@@ -186,7 +195,12 @@ class ToDoListContainer extends Component {
         selectedFilter,
         initializedTimer
       } = this.props
-      const onEditionMode = taskId !== undefined
+      const {
+        selectedTask
+      } = this.state
+
+      const onEditionMode = !!taskId
+
       const showModalModal = (showModal && !onEditionMode) ||
          (onEditionMode && selectedTask && showModal)
       return (
@@ -250,14 +264,15 @@ class ToDoListContainer extends Component {
               {
                 showModalModal &&
                 <ToDoForm
+                  mode={selectedTask ? EDIT_MODE : NEW_MODE}
                   editionMode={onEditionMode}
                   onCloseModal={this.goHome}
                   onSubmit={this.handleSubmit}
                   inserting={inserting}
                   errorOnInserting={errorOnInserting}
                   task={selectedTask}
-                  initialValues={selectedTask && this.getInitialValues(selectedTask)}
                   show={showModalModal}
+                  taskId={taskId}
                 />
               }
 

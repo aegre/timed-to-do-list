@@ -10,7 +10,7 @@ const TasksContext = React.createContext({})
 
 const defaultState = {
   tasks: [],
-  isLoading: false
+  isLoading: true
 }
 
 class TasksProvider extends Component {
@@ -46,6 +46,20 @@ class TasksProvider extends Component {
     }))
   }
 
+  updateTask = task => {
+    this.setState(({
+      tasks
+    }) => {
+      const updatedTaskIndex = tasks.findIndex(({ _id }) => task._id === _id)
+
+      const newTasks = [...tasks]
+      newTasks[updatedTaskIndex] = task
+      this.setState({
+        tasks: newTasks
+      })
+    })
+  }
+
   render () {
     const { children } = this.props
     const { tasks, isLoading } = this.state
@@ -60,7 +74,8 @@ class TasksProvider extends Component {
         onProgressTask,
         completedTasks: getCompletedTasks(tasks),
         isLoading,
-        addTask: this.addTask
+        addTask: this.addTask,
+        updateTask: this.updateTask
       }}
       >
         {children}

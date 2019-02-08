@@ -1,59 +1,14 @@
-.to-do-list-container-label {
-    display: flex;
-    width: 95%;
-    margin: 0 auto;
-    height: 35px;
-}
-
-.to-do-list-container-filter {
-    display: flex;
-    width: 95%;
-    margin: 0 auto;
-    align-content: center;
-    vertical-align: middle;
-    padding-top: 5px;
-}
-
-
-.col {
-    display: inline-block;
-}
-
-.row {
-    margin-bottom: 5px;
-}
-
-.section-header{
-    width: 80%;
-}
-
-.to-do-list-container-actions {
-    width: 20%;
-    align-content: center;
-    justify-content: flex-end;
-    display: flex;
-    height: 100%;
-    margin-top: 16px;
-}
-
-.to-do-list-icons div {
-    display: flex;
-}
-
-.to-do-list-icons .fas-button {
-    margin: 0px 5px;
-}
 
 .chart-container {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
 }
 
 .chart-container div{
-    text-align: center;
-    display: flex;
-    justify-content: center;
-    width: 100%;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  width: 100%;
 }
