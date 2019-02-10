@@ -3,3 +3,7 @@
 .modal-buttons button {
     margin: 20px;
 }
+
+.error-text {
+    color: red;
+}

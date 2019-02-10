@@ -62,9 +62,11 @@ class Routes extends Component {
 }
 
 Routes.propTypes = {
-  tasks: PropTypes.shape({
-    id: PropTypes.string.isRequired
-  }).isRequired
+  tasks: PropTypes.arrayOf(
+    PropTypes.shape({
+      _id: PropTypes.string.isRequired
+    }).isRequired
+  ).isRequired
 }
 
 export default withTasksData(Routes)

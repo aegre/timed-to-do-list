@@ -99,7 +99,8 @@ class TaskForm extends Component {
 
 TaskForm.defaultProps = {
   mode: NEW_MODE,
-  taskId: ''
+  taskId: '',
+  task: undefined
 }
 
 TaskForm.propTypes = {
@@ -109,7 +110,7 @@ TaskForm.propTypes = {
   updateTask: PropTypes.func.isRequired,
   task: PropTypes.shape({
     _id: PropTypes.string.isRequired
-  }).isRequired,
+  }),
   history: PropTypes.shape({
     push: PropTypes.func.isRequired
   }).isRequired

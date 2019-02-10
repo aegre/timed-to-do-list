@@ -19,8 +19,8 @@ class Tasks {
   static Fetch () {
     return apiGet('task')
   }
-  static Delete () {
-    return apiDelete('task')
+  static Delete (id) {
+    return apiDelete(`task/${id}`)
   }
 
   static Update (id, task) {
