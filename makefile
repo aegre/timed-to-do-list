@@ -5,19 +5,19 @@ help:
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
 setup: clean  ## Instalar dependencias del proyecto
-	npm install
+	yarn install
 
 start: ## Genera el bundle de webpack de producción
-	npm start
+	yarn start
 
 build: ## Genera el bundle de webpack de producción
-	npm build
+	yarn build
 
 lint: ## Correr el linter
-	npm run lint
+	yarn run lint
 
 lint-fix: ## Correr el linter en modo auto-arreglo
-	npm run lint --fix
+	yarn run lint --fix
 
 clean: ## Borrar carpeta node_modules y los hooks de git
 	rm -rf .git/hooks
@@ -26,7 +26,7 @@ clean: ## Borrar carpeta node_modules y los hooks de git
 	find . -name ".DS_Store" -delete
 
 test: ## Ejecutar pruebas
-	npm test
+	yarn test
 
 coverage: ## Ejecutar analisis de coverage
-	npm test --coverage
+	yarn test --coverage
