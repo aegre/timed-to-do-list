@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 
 // Components
 import API from 'api'
-import { getPendingTasks, getOnProgressTask, getCompletedTasks } from 'selectors/task'
+import { getOnProgressTask, getCompletedTasks } from 'selectors/task'
 
 const TasksContext = React.createContext({})
 
@@ -60,6 +60,14 @@ class TasksProvider extends Component {
     })
   }
 
+  deleteTask = taskId => {
+    this.setState(({
+      tasks
+    }) => ({
+      tasks: tasks.filter(({ _id }) => _id !== taskId)
+    }))
+  }
+
   render () {
     const { children } = this.props
     const { tasks, isLoading } = this.state
@@ -75,7 +83,8 @@ class TasksProvider extends Component {
         completedTasks: getCompletedTasks(tasks),
         isLoading,
         addTask: this.addTask,
-        updateTask: this.updateTask
+        updateTask: this.updateTask,
+        deleteTask: this.deleteTask
       }}
       >
         {children}
@@ -85,7 +94,7 @@ class TasksProvider extends Component {
 }
 
 TasksProvider.propTypes = {
-  children: PropTypes.number.isRequired
+  children: PropTypes.node.isRequired
 }
 
 const TasksConsumer = TasksContext.Consumer
