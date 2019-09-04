@@ -18,8 +18,8 @@
     "react/jsx-closing-bracket-location": ["error", "line-aligned"],
     "react/forbid-prop-types": ["error", {
       "forbid": ["any", "array", "object"],
-      "checkContextTypes": "true",
-      "checkChildContextTypes": "true"
+      "checkContextTypes": true,
+      "checkChildContextTypes": true
     }],
     "react/jsx-handler-names": ["off", {
       "eventHandlerPrefix": "handle",

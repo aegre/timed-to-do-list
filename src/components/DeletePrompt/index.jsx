@@ -9,7 +9,7 @@ import './styles.css'
 import { ROUTE_TASK, ROUTE_HOME } from 'constants/routes'
 import Loading from 'components/Loading'
 import API from 'api'
-import withTasksData from 'contexts/withTasksData'
+import withTasksData from 'contexts/Tasks/withTasksData'
 
 class DeletePrompt extends Component {
   state = {
@@ -56,20 +56,20 @@ class DeletePrompt extends Component {
               isLoading
                 ? <Loading />
                 : (
-                  <React.Fragment>
+                  <>
                     <Link to={ROUTE_HOME}>
-                      <button >Cancelar</button>
+                      <button>Cancelar</button>
                     </Link>
                     <button onClick={this.deleteTask} className='button-delete'>Eliminar</button>
-                  </React.Fragment>
+                  </>
                 )
             }
           </div>
           {
             hasError &&
-            <p className='error-text'>
+              <p className='error-text'>
               Ocurrió un error al intentar borrar la tarea, por favor inténtalo de nuevo.
-            </p>
+              </p>
           }
         </div>
       </ModalWindow>

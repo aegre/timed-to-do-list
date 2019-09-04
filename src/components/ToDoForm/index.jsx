@@ -12,7 +12,7 @@ import './styles.css'
 import { ROUTE_HOME } from 'constants/routes'
 import Form from './Form'
 import API from 'api'
-import withTasksData from 'contexts/withTasksData'
+import withTasksData from 'contexts/Tasks/withTasksData'
 import { getForminitialValues } from './utils'
 
 class TaskForm extends Component {

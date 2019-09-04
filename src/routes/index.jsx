@@ -7,12 +7,12 @@ import PropTypes from 'prop-types'
 import ToDoListContainer from 'containers/ToDoListContainer'
 import { ROUTE_HOME, ROUTE_TASK, ROUTE_TASK_NEW, ROUTE_TASK_EDIT, ROUTE_TASK_DELETE, ROUTE_STADISTICS } from 'constants/routes'
 import ChartsContainer from 'containers/ChartsContainer'
-import withTasksData from 'contexts/withTasksData'
+import withTasksData from 'contexts/Tasks/withTasksData'
 
 class Routes extends Component {
   render () {
     return (
-      <React.Fragment>
+      <>
         <Route
           exact
           path={ROUTE_HOME}
@@ -56,7 +56,7 @@ class Routes extends Component {
               />}
           />
         </Switch>
-      </React.Fragment>
+      </>
     )
   }
 }

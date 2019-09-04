@@ -8,7 +8,7 @@ import { getCompletedTasks } from '../selectors/task'
 import { converTaskToChartData } from '../helpers/convertTasksToChartData'
 
 import './styles.css'
-import withTasksData from 'contexts/withTasksData'
+import withTasksData from 'contexts/Tasks/withTasksData'
 
 class ChartsContainer extends Component {
   render () {
