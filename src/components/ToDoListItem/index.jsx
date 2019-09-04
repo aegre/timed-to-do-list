@@ -3,45 +3,10 @@ import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 
 import './styles.css'
-import { formatDate } from '../../helpers/formatDate'
-import { secondToMinutes } from '../../helpers/secondsToMinute'
-import { ROUTE_TASK_EDIT, ROUTE_TASK_DELETE } from '../../constants/routes'
-
-const renderPause = (handler) => (
-  <div className='fas-button' onClick={handler}>
-    <i className='fas fa-pause' />
-  </div>
-)
-
-const renderPlay = (handler) => (
-  <div className='fas-button' onClick={handler}>
-    <i className='fas fa-play' />
-  </div>
-)
-const renderTimerIcons = (onStop, onPause, onStart, startedTimer) => (
-  <div>
-
-    <div className='fas-button' onClick={onStop}>
-      <i className='fas fa-stop' />
-    </div>
-    { startedTimer && renderPause(onPause) }
-    { !startedTimer && renderPlay(onStart) }
-
-  </div>
-)
-
-const renderIcons = (status, id) => (
-  <div>
-    { status === 0 &&
-    <Link to={ROUTE_TASK_EDIT.replace(':id', id)} className='fas-button'>
-      <i className='far fa-edit' />
-    </Link>
-    }
-    <Link to={ROUTE_TASK_DELETE.replace(':id', id)} className='fas-button'>
-      <i className='fas fa-trash' />
-    </Link>
-  </div>
-)
+import { formatDate } from 'helpers/formatDate'
+import { secondToMinutes } from 'helpers/secondsToMinute'
+import { ROUTE_TASK_EDIT, ROUTE_TASK_DELETE } from 'constants/routes'
+import Icon from 'components/shared/Icon'
 
 const allowDrop = ev => {
   ev.preventDefault()
@@ -52,19 +17,20 @@ const sentDragData = task =>
     ev.dataTransfer.setData('taskId', task)
   }
 
-const ToDoListItem = ({ title, description, duration,
+const ToDoListItem = ({
+  title, description, duration,
   elapsed, creationDate, _id, onComplete, status,
   finishDate, index, startedTimer,
   onStop, onPause, onStart,
-  currentIndexOnList,
   onDrop
 }) => {
   return (
-    <div className='to-do-list-item card'
+    <div
+      className='to-do-list-item card'
       onDragStart={sentDragData(_id)}
       onDragOver={allowDrop}
       draggable={status === 0}
-      onDrop={ev => { onDrop(ev.dataTransfer.getData('taskId'), currentIndexOnList) }}
+      onDrop={ev => { onDrop(ev.dataTransfer.getData('taskId'), index) }}
     >
       <div className='to-do-list-item-container'>
         <div className={`to-do-list-item-title row ${status && 'completed'}`}>
@@ -77,34 +43,53 @@ const ToDoListItem = ({ title, description, duration,
             {description}
           </span>
         </div>
-        <div className={`to-do-list-item-elapsed row ${status && 'completed'}`} >
-          <span className='to-do-list-item-property'>Transcurrido:</span> <span>{secondToMinutes(elapsed)}      </span>
-          <span className='to-do-list-item-property'>Asignado:</span> <span>{secondToMinutes(duration)}</span>
+        <div className={`to-do-list-item-elapsed row ${status && 'completed'}`}>
+          <span className='to-do-list-item-property'>Transcurrido:</span>
+          {' '}
+          <span>
+            {secondToMinutes(elapsed)}
+            {' '}
+          </span>
+          <span className='to-do-list-item-property'>Asignado:</span>
+          {' '}
+          <span>{secondToMinutes(duration)}</span>
         </div>
-        { status === 0 &&
+        {status === 0 &&
           <div className='to-do-list-item-creation'>
             <p>{`${formatDate(creationDate)}`}</p>
-          </div>
-        }
-        { status === 1 &&
+          </div>}
+        {status === 1 &&
           <div className='to-do-list-item-creation'>
             <span>{`Finalizada: ${formatDate(finishDate)}`}</span>
-          </div>
-        }
+          </div>}
       </div>
       <div className='to-do-list-item-actions'>
         {status === 0 && (index !== 0 || !startedTimer) &&
           <div className='to-do-list-item-complete'>
             <span className='hide-on-low'>Completar</span>
             <div className='fas-button' onClick={() => onComplete(_id)}><i className='fas fa-check' /></div>
-          </div>
-        }
+          </div>}
         <div className='to-do-list-icons'>
+          {
+            status === 0 && !startedTimer && (
+              <Link to={ROUTE_TASK_EDIT.replace(':id', _id)}>
+                <Icon icon='edit' isButton />
+              </Link>
+            )
+          }
 
-          { !(status === 0 && index === 0 && startedTimer) &&
-                        renderIcons(status, _id)}
-          {status === 0 && index === 0 &&
-                        renderTimerIcons(onStop, onPause, onStart, startedTimer)}
+          <Link to={ROUTE_TASK_DELETE.replace(':id', _id)}>
+            <Icon icon='trash' isButton />
+          </Link>
+          {
+            index === 0 && (
+              <>
+                <Icon icon='stop' onClick={onStop} />
+                {startedTimer && <Icon icon='pause' onClick={onPause} />}
+                {!startedTimer && <Icon icon='play' onClick={onStart} />}
+              </>
+            )
+          }
 
         </div>
       </div>
@@ -126,6 +111,9 @@ ToDoListItem.propTypes = {
   onPause: PropTypes.func,
   currentIndexOnList: PropTypes.number.isRequired,
   onDrop: PropTypes.func
+}
+
+ToDoListItem.defaultProps = {
 }
 
 export default ToDoListItem

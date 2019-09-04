@@ -2,37 +2,45 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import ToDoListItem from './ToDoListItem'
 
-const renderTasks = (tasks, onComplete, onStopTimer, onPauseTimer, onStartTimer, startedTimer, onDrop) => (
-  tasks.map((task, index) => (
-    <ToDoListItem {...task}
-      currentIndexOnList={index}
-      onStop={onStopTimer} onPause={onPauseTimer} onStart={onStartTimer}
-      key={task._id} onComplete={onComplete} startedTimer={startedTimer}
-      onDrop={onDrop} />
-  ))
-)
-
-const ToDoList = ({ tasks,
+const ToDoList = ({
+  tasks,
   onComplete,
   onStopTimer,
   onPauseTimer,
   onStartTimer,
   startedTimer,
   onDrop,
-  acceptDrop }) => {
-  return (
-    <div>
-      {tasks && renderTasks(tasks, onComplete, onStopTimer,
-        onPauseTimer, onStartTimer, startedTimer, onDrop)}
-      {tasks && tasks.length === 0 &&
-      <div className='text-center'
+  acceptDrop
+}) => {
+  if (tasks.length === 0) {
+    return (
+      <div
+        className='text-center'
         onDragOver={evt => { acceptDrop && evt.preventDefault() }}
         onDrop={ev => { acceptDrop && onDrop(ev.dataTransfer.getData('taskId'), 0) }}
       >
-                    Sin tareas
-      </div> }
-    </div>
+        Sin tareas
+      </div>
+    )
+  }
+  return (
+    tasks.map((task, index) =>
+      (
+        <ToDoListItem
+          {...task}
+          key={task._id}
+          onStop={onStopTimer}
+          onPause={onPauseTimer}
+          onStart={onStartTimer}
+          onComplete={onComplete}
+          startedTimer={startedTimer}
+          onDrop={onDrop}
+        />))
   )
+}
+
+ToDoList.defaultProps = {
+  tasks: []
 }
 
 ToDoList.propTypes = {
